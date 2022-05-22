@@ -7,7 +7,7 @@ var typeMapping = map[string]string{
 	"double":  "float64",
 	"float":   "float32",
 	"int":     "int",
-    "integer": "int",
+	"integer": "int",
 	"string":  "string",
 	"boolean": "bool",
 	"bool":    "bool",
@@ -84,6 +84,80 @@ func convertProperties(props []JsonProperty) []Property {
 	for _, v := range props {
 		if strings.ContainsRune(v.Name, '.') {
 			parts := strings.Split(v.Name, ".")
+
+			// HACK: Handle the **single case** in the entire protocol of
+			// doubly-nested anonymous structs. Thanks, OBS websocket
+			// developers! (:
+			if len(parts) == 4 {
+				if parts[0] != "types" || parts[2] != "caps" {
+					die("new doubly nested type")
+				}
+				continue
+			}
+
+			if len(parts) == 3 && parts[0] == "types" && parts[2] == "caps" {
+				t := embeds[parts[0]]
+				t.children = append(t.children, Property{
+					Name: "Caps",
+					Docs: "Source type capabilities",
+					Type: StructType{
+						[]Property{
+							{
+								Name: "IsAsync",
+								Docs: "True if source of this type provide frames asynchronously",
+								Type: BasicType{
+									name: "bool",
+								},
+							},
+							{
+								Name: "HasVideo",
+								Docs: "True if sources of this type provide video",
+								Type: BasicType{
+									name: "bool",
+								},
+							},
+							{
+								Name: "HasAudio",
+								Docs: "True if sources of this type provide audio",
+								Type: BasicType{
+									name: "bool",
+								},
+							},
+							{
+								Name: "CanInteract",
+								Docs: "True if interaction with this sources of this type is possible",
+								Type: BasicType{
+									name: "bool",
+								},
+							},
+							{
+								Name: "IsComposite",
+								Docs: "True if sources of this type composite one or more sub-sources",
+								Type: BasicType{
+									name: "bool",
+								},
+							},
+							{
+								Name: "DoNotDuplicate",
+								Docs: "True if sources of this type should not be fully duplicated",
+								Type: BasicType{
+									name: "bool",
+								},
+							},
+							{
+								Name: "DoNotSelfMonitor",
+								Docs: "True if sources of this type may cause a feedback loop if it's audio is monitored and shouldn't be",
+								Type: BasicType{
+									name: "bool",
+								},
+							},
+						},
+						false,
+					},
+				})
+				embeds[parts[0]] = t
+				continue
+			}
 
 			// Check if this is an *array* of anonymous structs.
 			isArray := len(parts) >= 3
