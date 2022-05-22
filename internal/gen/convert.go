@@ -98,68 +98,69 @@ func convertProperties(props []JsonProperty) []Property {
 			if len(parts) == 3 && parts[0] == "types" && parts[2] == "caps" {
 				t := embeds[parts[0]]
 				t.children = append(t.children, Property{
-					Name: "Caps",
-                    JsonTag: "caps",
-					Docs: "Source type capabilities",
+					Name:    "Caps",
+					JsonTag: "caps",
+					Docs:    "Source type capabilities",
 					Type: StructType{
 						[]Property{
 							{
-								Name: "IsAsync",
-                                JsonTag: "isAsync",
-								Docs: "True if source of this type provide frames asynchronously",
+								Name:    "IsAsync",
+								JsonTag: "isAsync",
+								Docs:    "True if source of this type provide frames asynchronously",
 								Type: BasicType{
 									name: "bool",
 								},
 							},
 							{
-								Name: "HasVideo",
-                                JsonTag: "hasVideo",
-								Docs: "True if sources of this type provide video",
+								Name:    "HasVideo",
+								JsonTag: "hasVideo",
+								Docs:    "True if sources of this type provide video",
 								Type: BasicType{
 									name: "bool",
 								},
 							},
 							{
-								Name: "HasAudio",
-                                JsonTag: "hasAudio",
-								Docs: "True if sources of this type provide audio",
+								Name:    "HasAudio",
+								JsonTag: "hasAudio",
+								Docs:    "True if sources of this type provide audio",
 								Type: BasicType{
 									name: "bool",
 								},
 							},
 							{
-								Name: "CanInteract",
-                                JsonTag: "canInteract",
-								Docs: "True if interaction with this sources of this type is possible",
+								Name:    "CanInteract",
+								JsonTag: "canInteract",
+								Docs:    "True if interaction with this sources of this type is possible",
 								Type: BasicType{
 									name: "bool",
 								},
 							},
 							{
-								Name: "IsComposite",
-                                JsonTag: "isComposite",
-								Docs: "True if sources of this type composite one or more sub-sources",
+								Name:    "IsComposite",
+								JsonTag: "isComposite",
+								Docs:    "True if sources of this type composite one or more sub-sources",
 								Type: BasicType{
 									name: "bool",
 								},
 							},
 							{
-								Name: "DoNotDuplicate",
-                                JsonTag: "doNotDuplicate",
-								Docs: "True if sources of this type should not be fully duplicated",
+								Name:    "DoNotDuplicate",
+								JsonTag: "doNotDuplicate",
+								Docs:    "True if sources of this type should not be fully duplicated",
 								Type: BasicType{
 									name: "bool",
 								},
 							},
 							{
-								Name: "DoNotSelfMonitor",
-                                JsonTag: "doNotSelfMonitor",
-								Docs: "True if sources of this type may cause a feedback loop if it's audio is monitored and shouldn't be",
+								Name:    "DoNotSelfMonitor",
+								JsonTag: "doNotSelfMonitor",
+								Docs:    "True if sources of this type may cause a feedback loop if it's audio is monitored and shouldn't be",
 								Type: BasicType{
 									name: "bool",
 								},
 							},
 						},
+						false,
 						false,
 					},
 				})
@@ -176,22 +177,25 @@ func convertProperties(props []JsonProperty) []Property {
 			} else {
 				t = StructType{
 					[]Property{},
+					false,
 					isArray,
 				}
 			}
 
-			var part string
-			if isArray {
-				part = parts[len(parts)-1]
+			part := parts[len(parts)-1]
+			ct := convertType(v.Type)
+			var jt string
+			if ct.optional {
+				jt = part + ",omitempty"
 			} else {
-				part = parts[1]
+				jt = part
 			}
 
 			newProp := Property{
-				Name: camelPascal(part),
-                JsonTag: part,
-				Docs: v.Docs,
-				Type: convertType(v.Type),
+				Name:    camelPascal(part),
+				JsonTag: jt,
+				Docs:    v.Docs,
+				Type:    ct,
 			}
 
 			t.children = append(t.children, newProp)
@@ -210,11 +214,17 @@ func convertProperties(props []JsonProperty) []Property {
 		if strings.ContainsRune(v.Name, '.') {
 			parts := strings.Split(v.Name, ".")
 			if _, ok := written[parts[0]]; !ok {
+				var jt string
+				if embeds[parts[0]].Optional() {
+					jt = parts[0] + ",omitmepty"
+				} else {
+					jt = parts[0]
+				}
 				out = append(out, Property{
-					Name: camelPascal(parts[0]),
-                    JsonTag: parts[0],
-					Docs: v.Docs,
-					Type: embeds[parts[0]],
+					Name:    camelPascal(parts[0]),
+					JsonTag: jt,
+					Docs:    v.Docs,
+					Type:    embeds[parts[0]],
 				})
 				written[parts[0]] = struct{}{}
 			}
@@ -224,22 +234,35 @@ func convertProperties(props []JsonProperty) []Property {
 		// Check if embedded struct type.
 		if s, ok := embeds[v.Name]; ok {
 			if _, ok := written[v.Name]; !ok {
+				var jt string
+				if embeds[v.Name].Optional() {
+					jt = v.Name + ",omitmepty"
+				} else {
+					jt = v.Name
+				}
 				out = append(out, Property{
-					Name: camelPascal(v.Name),
-                    JsonTag: v.Name,
-					Docs: v.Docs,
-					Type: s,
+					Name:    camelPascal(v.Name),
+					JsonTag: jt,
+					Docs:    v.Docs,
+					Type:    s,
 				})
 				written[v.Name] = struct{}{}
 			}
 			continue
 		}
 
+		ct := convertType(v.Type)
+		var jt string
+		if ct.optional {
+			jt = v.Name + ",omitempty"
+		} else {
+			jt = v.Name
+		}
 		out = append(out, Property{
-			Name: camelPascal(v.Name),
-            JsonTag: v.Name,
-			Docs: v.Docs,
-			Type: convertType(v.Type),
+			Name:    camelPascal(v.Name),
+			JsonTag: jt,
+			Docs:    v.Docs,
+			Type:    convertType(v.Type),
 		})
 	}
 

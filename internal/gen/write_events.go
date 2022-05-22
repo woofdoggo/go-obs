@@ -11,14 +11,14 @@ func writeEvents(events []Event) {
 	for _, e := range events {
 		buf.WriteString(wrapComment(e.Docs))
 		buf.WriteString(fmt.Sprintf("type %sEvent struct {\n", e.Name))
-        buf.WriteString("eventData\n")
+		buf.WriteString("eventData\n")
 		for _, p := range e.Returns {
 			str := fmt.Sprintf(
-                "%s%s %s `json:\"%s\"`\n",
+				"%s%s %s `json:\"%s\"`\n",
 				wrapComment(p.Docs),
 				p.Name,
 				p.Type.String(),
-                p.JsonTag,
+				p.JsonTag,
 			)
 			buf.WriteString(str)
 		}

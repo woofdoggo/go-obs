@@ -23,10 +23,11 @@ func (t BasicType) String() string {
 	}
 
 	if t.optional {
-		return fmt.Sprintf("Optional[%s]", n)
-	} else {
-		return n
+		if !t.array && t.name != "string" && t.name != "interface{}" {
+			return "*" + n
+		}
 	}
+	return n
 }
 
 func (t BasicType) Optional() bool {
@@ -39,6 +40,7 @@ func (t BasicType) Array() bool {
 
 type StructType struct {
 	children []Property
+	optional bool
 	array    bool
 }
 
@@ -52,11 +54,11 @@ func (t StructType) String() string {
 
 	for _, p := range t.children {
 		out += fmt.Sprintf(
-            "%s%s %s `json:\"%s\"`\n",
+			"%s%s %s `json:\"%s\"`\n",
 			wrapComment(p.Docs),
 			p.Name,
 			p.Type.String(),
-            p.JsonTag,
+			p.JsonTag,
 		)
 	}
 	out += "}"
@@ -64,7 +66,7 @@ func (t StructType) String() string {
 }
 
 func (t StructType) Optional() bool {
-	return false
+	return t.optional
 }
 
 func (t StructType) Array() bool {
