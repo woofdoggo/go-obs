@@ -99,11 +99,13 @@ func convertProperties(props []JsonProperty) []Property {
 				t := embeds[parts[0]]
 				t.children = append(t.children, Property{
 					Name: "Caps",
+                    JsonTag: "caps",
 					Docs: "Source type capabilities",
 					Type: StructType{
 						[]Property{
 							{
 								Name: "IsAsync",
+                                JsonTag: "isAsync",
 								Docs: "True if source of this type provide frames asynchronously",
 								Type: BasicType{
 									name: "bool",
@@ -111,6 +113,7 @@ func convertProperties(props []JsonProperty) []Property {
 							},
 							{
 								Name: "HasVideo",
+                                JsonTag: "hasVideo",
 								Docs: "True if sources of this type provide video",
 								Type: BasicType{
 									name: "bool",
@@ -118,6 +121,7 @@ func convertProperties(props []JsonProperty) []Property {
 							},
 							{
 								Name: "HasAudio",
+                                JsonTag: "hasAudio",
 								Docs: "True if sources of this type provide audio",
 								Type: BasicType{
 									name: "bool",
@@ -125,6 +129,7 @@ func convertProperties(props []JsonProperty) []Property {
 							},
 							{
 								Name: "CanInteract",
+                                JsonTag: "canInteract",
 								Docs: "True if interaction with this sources of this type is possible",
 								Type: BasicType{
 									name: "bool",
@@ -132,6 +137,7 @@ func convertProperties(props []JsonProperty) []Property {
 							},
 							{
 								Name: "IsComposite",
+                                JsonTag: "isComposite",
 								Docs: "True if sources of this type composite one or more sub-sources",
 								Type: BasicType{
 									name: "bool",
@@ -139,6 +145,7 @@ func convertProperties(props []JsonProperty) []Property {
 							},
 							{
 								Name: "DoNotDuplicate",
+                                JsonTag: "doNotDuplicate",
 								Docs: "True if sources of this type should not be fully duplicated",
 								Type: BasicType{
 									name: "bool",
@@ -146,6 +153,7 @@ func convertProperties(props []JsonProperty) []Property {
 							},
 							{
 								Name: "DoNotSelfMonitor",
+                                JsonTag: "doNotSelfMonitor",
 								Docs: "True if sources of this type may cause a feedback loop if it's audio is monitored and shouldn't be",
 								Type: BasicType{
 									name: "bool",
@@ -181,6 +189,7 @@ func convertProperties(props []JsonProperty) []Property {
 
 			newProp := Property{
 				Name: camelPascal(part),
+                JsonTag: part,
 				Docs: v.Docs,
 				Type: convertType(v.Type),
 			}
@@ -203,6 +212,7 @@ func convertProperties(props []JsonProperty) []Property {
 			if _, ok := written[parts[0]]; !ok {
 				out = append(out, Property{
 					Name: camelPascal(parts[0]),
+                    JsonTag: parts[0],
 					Docs: v.Docs,
 					Type: embeds[parts[0]],
 				})
@@ -216,6 +226,7 @@ func convertProperties(props []JsonProperty) []Property {
 			if _, ok := written[v.Name]; !ok {
 				out = append(out, Property{
 					Name: camelPascal(v.Name),
+                    JsonTag: v.Name,
 					Docs: v.Docs,
 					Type: s,
 				})
@@ -226,6 +237,7 @@ func convertProperties(props []JsonProperty) []Property {
 
 		out = append(out, Property{
 			Name: camelPascal(v.Name),
+            JsonTag: v.Name,
 			Docs: v.Docs,
 			Type: convertType(v.Type),
 		})

@@ -16,24 +16,28 @@ func writeRequests(reqs []Request) {
 			buf.WriteString(wrapComment(r.Deprecated))
 		}
 		buf.WriteString(fmt.Sprintf("type %sRequest struct {\n", r.Name))
+        buf.WriteString("reqData\n")
 		for _, p := range r.Parameters {
 			str := fmt.Sprintf(
-				"%s%s %s\n",
+                "%s%s %s `json:\"%s\"`\n",
 				wrapComment(p.Docs),
 				p.Name,
 				p.Type.String(),
+                p.JsonTag,
 			)
 			buf.WriteString(str)
 		}
 		buf.WriteString("}\n\n")
 
 		buf.WriteString(fmt.Sprintf("type %sResponse struct {\n", r.Name))
+        buf.WriteString("resData\n")
 		for _, p := range r.Returns {
 			str := fmt.Sprintf(
-				"%s%s %s\n",
+                "%s%s %s `json:\"%s\"`\n",
 				wrapComment(p.Docs),
 				p.Name,
 				p.Type.String(),
+                p.JsonTag,
 			)
 			buf.WriteString(str)
 		}

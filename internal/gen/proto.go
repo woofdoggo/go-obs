@@ -27,7 +27,8 @@ type Request struct {
 }
 
 type Property struct {
-	Name string
-	Docs string
-	Type Type
+	Name    string
+	Docs    string
+	Type    Type
+	JsonTag string
 }

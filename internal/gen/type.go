@@ -52,10 +52,11 @@ func (t StructType) String() string {
 
 	for _, p := range t.children {
 		out += fmt.Sprintf(
-			"%s%s %s\n",
+            "%s%s %s `json:\"%s\"`\n",
 			wrapComment(p.Docs),
 			p.Name,
 			p.Type.String(),
+            p.JsonTag,
 		)
 	}
 	out += "}"
