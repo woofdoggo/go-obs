@@ -1,5 +1,7 @@
 package go_obs
 
+import "encoding/json"
+
 // A custom broadcast message, sent by the server, requested by one of the
 // websocket clients.
 type BroadcastCustomMessageEvent struct {
@@ -647,4 +649,511 @@ type VirtualCamStartedEvent struct {
 // Virtual cam stopped successfully.
 type VirtualCamStoppedEvent struct {
 	eventData
+}
+
+var eventConverters = map[string]func([]byte) any{
+	"BroadcastCustomMessage": func(data []byte) any {
+		evt := &BroadcastCustomMessageEvent{}
+		err := json.Unmarshal(data, evt)
+		if err != nil {
+			return nil
+		}
+		return evt
+	},
+	"Exiting": func(data []byte) any {
+		evt := &ExitingEvent{}
+		err := json.Unmarshal(data, evt)
+		if err != nil {
+			return nil
+		}
+		return evt
+	},
+	"Heartbeat": func(data []byte) any {
+		evt := &HeartbeatEvent{}
+		err := json.Unmarshal(data, evt)
+		if err != nil {
+			return nil
+		}
+		return evt
+	},
+	"MediaEnded": func(data []byte) any {
+		evt := &MediaEndedEvent{}
+		err := json.Unmarshal(data, evt)
+		if err != nil {
+			return nil
+		}
+		return evt
+	},
+	"MediaNext": func(data []byte) any {
+		evt := &MediaNextEvent{}
+		err := json.Unmarshal(data, evt)
+		if err != nil {
+			return nil
+		}
+		return evt
+	},
+	"MediaPaused": func(data []byte) any {
+		evt := &MediaPausedEvent{}
+		err := json.Unmarshal(data, evt)
+		if err != nil {
+			return nil
+		}
+		return evt
+	},
+	"MediaPlaying": func(data []byte) any {
+		evt := &MediaPlayingEvent{}
+		err := json.Unmarshal(data, evt)
+		if err != nil {
+			return nil
+		}
+		return evt
+	},
+	"MediaPrevious": func(data []byte) any {
+		evt := &MediaPreviousEvent{}
+		err := json.Unmarshal(data, evt)
+		if err != nil {
+			return nil
+		}
+		return evt
+	},
+	"MediaRestarted": func(data []byte) any {
+		evt := &MediaRestartedEvent{}
+		err := json.Unmarshal(data, evt)
+		if err != nil {
+			return nil
+		}
+		return evt
+	},
+	"MediaStarted": func(data []byte) any {
+		evt := &MediaStartedEvent{}
+		err := json.Unmarshal(data, evt)
+		if err != nil {
+			return nil
+		}
+		return evt
+	},
+	"MediaStopped": func(data []byte) any {
+		evt := &MediaStoppedEvent{}
+		err := json.Unmarshal(data, evt)
+		if err != nil {
+			return nil
+		}
+		return evt
+	},
+	"PreviewSceneChanged": func(data []byte) any {
+		evt := &PreviewSceneChangedEvent{}
+		err := json.Unmarshal(data, evt)
+		if err != nil {
+			return nil
+		}
+		return evt
+	},
+	"ProfileChanged": func(data []byte) any {
+		evt := &ProfileChangedEvent{}
+		err := json.Unmarshal(data, evt)
+		if err != nil {
+			return nil
+		}
+		return evt
+	},
+	"ProfileListChanged": func(data []byte) any {
+		evt := &ProfileListChangedEvent{}
+		err := json.Unmarshal(data, evt)
+		if err != nil {
+			return nil
+		}
+		return evt
+	},
+	"RecordingPaused": func(data []byte) any {
+		evt := &RecordingPausedEvent{}
+		err := json.Unmarshal(data, evt)
+		if err != nil {
+			return nil
+		}
+		return evt
+	},
+	"RecordingResumed": func(data []byte) any {
+		evt := &RecordingResumedEvent{}
+		err := json.Unmarshal(data, evt)
+		if err != nil {
+			return nil
+		}
+		return evt
+	},
+	"RecordingStarted": func(data []byte) any {
+		evt := &RecordingStartedEvent{}
+		err := json.Unmarshal(data, evt)
+		if err != nil {
+			return nil
+		}
+		return evt
+	},
+	"RecordingStarting": func(data []byte) any {
+		evt := &RecordingStartingEvent{}
+		err := json.Unmarshal(data, evt)
+		if err != nil {
+			return nil
+		}
+		return evt
+	},
+	"RecordingStopped": func(data []byte) any {
+		evt := &RecordingStoppedEvent{}
+		err := json.Unmarshal(data, evt)
+		if err != nil {
+			return nil
+		}
+		return evt
+	},
+	"RecordingStopping": func(data []byte) any {
+		evt := &RecordingStoppingEvent{}
+		err := json.Unmarshal(data, evt)
+		if err != nil {
+			return nil
+		}
+		return evt
+	},
+	"ReplayStarted": func(data []byte) any {
+		evt := &ReplayStartedEvent{}
+		err := json.Unmarshal(data, evt)
+		if err != nil {
+			return nil
+		}
+		return evt
+	},
+	"ReplayStarting": func(data []byte) any {
+		evt := &ReplayStartingEvent{}
+		err := json.Unmarshal(data, evt)
+		if err != nil {
+			return nil
+		}
+		return evt
+	},
+	"ReplayStopped": func(data []byte) any {
+		evt := &ReplayStoppedEvent{}
+		err := json.Unmarshal(data, evt)
+		if err != nil {
+			return nil
+		}
+		return evt
+	},
+	"ReplayStopping": func(data []byte) any {
+		evt := &ReplayStoppingEvent{}
+		err := json.Unmarshal(data, evt)
+		if err != nil {
+			return nil
+		}
+		return evt
+	},
+	"SceneCollectionChanged": func(data []byte) any {
+		evt := &SceneCollectionChangedEvent{}
+		err := json.Unmarshal(data, evt)
+		if err != nil {
+			return nil
+		}
+		return evt
+	},
+	"SceneCollectionListChanged": func(data []byte) any {
+		evt := &SceneCollectionListChangedEvent{}
+		err := json.Unmarshal(data, evt)
+		if err != nil {
+			return nil
+		}
+		return evt
+	},
+	"SceneItemAdded": func(data []byte) any {
+		evt := &SceneItemAddedEvent{}
+		err := json.Unmarshal(data, evt)
+		if err != nil {
+			return nil
+		}
+		return evt
+	},
+	"SceneItemDeselected": func(data []byte) any {
+		evt := &SceneItemDeselectedEvent{}
+		err := json.Unmarshal(data, evt)
+		if err != nil {
+			return nil
+		}
+		return evt
+	},
+	"SceneItemLockChanged": func(data []byte) any {
+		evt := &SceneItemLockChangedEvent{}
+		err := json.Unmarshal(data, evt)
+		if err != nil {
+			return nil
+		}
+		return evt
+	},
+	"SceneItemRemoved": func(data []byte) any {
+		evt := &SceneItemRemovedEvent{}
+		err := json.Unmarshal(data, evt)
+		if err != nil {
+			return nil
+		}
+		return evt
+	},
+	"SceneItemSelected": func(data []byte) any {
+		evt := &SceneItemSelectedEvent{}
+		err := json.Unmarshal(data, evt)
+		if err != nil {
+			return nil
+		}
+		return evt
+	},
+	"SceneItemTransformChanged": func(data []byte) any {
+		evt := &SceneItemTransformChangedEvent{}
+		err := json.Unmarshal(data, evt)
+		if err != nil {
+			return nil
+		}
+		return evt
+	},
+	"SceneItemVisibilityChanged": func(data []byte) any {
+		evt := &SceneItemVisibilityChangedEvent{}
+		err := json.Unmarshal(data, evt)
+		if err != nil {
+			return nil
+		}
+		return evt
+	},
+	"ScenesChanged": func(data []byte) any {
+		evt := &ScenesChangedEvent{}
+		err := json.Unmarshal(data, evt)
+		if err != nil {
+			return nil
+		}
+		return evt
+	},
+	"SourceAudioActivated": func(data []byte) any {
+		evt := &SourceAudioActivatedEvent{}
+		err := json.Unmarshal(data, evt)
+		if err != nil {
+			return nil
+		}
+		return evt
+	},
+	"SourceAudioDeactivated": func(data []byte) any {
+		evt := &SourceAudioDeactivatedEvent{}
+		err := json.Unmarshal(data, evt)
+		if err != nil {
+			return nil
+		}
+		return evt
+	},
+	"SourceAudioMixersChanged": func(data []byte) any {
+		evt := &SourceAudioMixersChangedEvent{}
+		err := json.Unmarshal(data, evt)
+		if err != nil {
+			return nil
+		}
+		return evt
+	},
+	"SourceAudioSyncOffsetChanged": func(data []byte) any {
+		evt := &SourceAudioSyncOffsetChangedEvent{}
+		err := json.Unmarshal(data, evt)
+		if err != nil {
+			return nil
+		}
+		return evt
+	},
+	"SourceCreated": func(data []byte) any {
+		evt := &SourceCreatedEvent{}
+		err := json.Unmarshal(data, evt)
+		if err != nil {
+			return nil
+		}
+		return evt
+	},
+	"SourceDestroyed": func(data []byte) any {
+		evt := &SourceDestroyedEvent{}
+		err := json.Unmarshal(data, evt)
+		if err != nil {
+			return nil
+		}
+		return evt
+	},
+	"SourceFilterAdded": func(data []byte) any {
+		evt := &SourceFilterAddedEvent{}
+		err := json.Unmarshal(data, evt)
+		if err != nil {
+			return nil
+		}
+		return evt
+	},
+	"SourceFilterRemoved": func(data []byte) any {
+		evt := &SourceFilterRemovedEvent{}
+		err := json.Unmarshal(data, evt)
+		if err != nil {
+			return nil
+		}
+		return evt
+	},
+	"SourceFilterVisibilityChanged": func(data []byte) any {
+		evt := &SourceFilterVisibilityChangedEvent{}
+		err := json.Unmarshal(data, evt)
+		if err != nil {
+			return nil
+		}
+		return evt
+	},
+	"SourceFiltersReordered": func(data []byte) any {
+		evt := &SourceFiltersReorderedEvent{}
+		err := json.Unmarshal(data, evt)
+		if err != nil {
+			return nil
+		}
+		return evt
+	},
+	"SourceMuteStateChanged": func(data []byte) any {
+		evt := &SourceMuteStateChangedEvent{}
+		err := json.Unmarshal(data, evt)
+		if err != nil {
+			return nil
+		}
+		return evt
+	},
+	"SourceOrderChanged": func(data []byte) any {
+		evt := &SourceOrderChangedEvent{}
+		err := json.Unmarshal(data, evt)
+		if err != nil {
+			return nil
+		}
+		return evt
+	},
+	"SourceRenamed": func(data []byte) any {
+		evt := &SourceRenamedEvent{}
+		err := json.Unmarshal(data, evt)
+		if err != nil {
+			return nil
+		}
+		return evt
+	},
+	"SourceVolumeChanged": func(data []byte) any {
+		evt := &SourceVolumeChangedEvent{}
+		err := json.Unmarshal(data, evt)
+		if err != nil {
+			return nil
+		}
+		return evt
+	},
+	"StreamStarted": func(data []byte) any {
+		evt := &StreamStartedEvent{}
+		err := json.Unmarshal(data, evt)
+		if err != nil {
+			return nil
+		}
+		return evt
+	},
+	"StreamStarting": func(data []byte) any {
+		evt := &StreamStartingEvent{}
+		err := json.Unmarshal(data, evt)
+		if err != nil {
+			return nil
+		}
+		return evt
+	},
+	"StreamStatus": func(data []byte) any {
+		evt := &StreamStatusEvent{}
+		err := json.Unmarshal(data, evt)
+		if err != nil {
+			return nil
+		}
+		return evt
+	},
+	"StreamStopped": func(data []byte) any {
+		evt := &StreamStoppedEvent{}
+		err := json.Unmarshal(data, evt)
+		if err != nil {
+			return nil
+		}
+		return evt
+	},
+	"StreamStopping": func(data []byte) any {
+		evt := &StreamStoppingEvent{}
+		err := json.Unmarshal(data, evt)
+		if err != nil {
+			return nil
+		}
+		return evt
+	},
+	"StudioModeSwitched": func(data []byte) any {
+		evt := &StudioModeSwitchedEvent{}
+		err := json.Unmarshal(data, evt)
+		if err != nil {
+			return nil
+		}
+		return evt
+	},
+	"SwitchScenes": func(data []byte) any {
+		evt := &SwitchScenesEvent{}
+		err := json.Unmarshal(data, evt)
+		if err != nil {
+			return nil
+		}
+		return evt
+	},
+	"SwitchTransition": func(data []byte) any {
+		evt := &SwitchTransitionEvent{}
+		err := json.Unmarshal(data, evt)
+		if err != nil {
+			return nil
+		}
+		return evt
+	},
+	"TransitionBegin": func(data []byte) any {
+		evt := &TransitionBeginEvent{}
+		err := json.Unmarshal(data, evt)
+		if err != nil {
+			return nil
+		}
+		return evt
+	},
+	"TransitionDurationChanged": func(data []byte) any {
+		evt := &TransitionDurationChangedEvent{}
+		err := json.Unmarshal(data, evt)
+		if err != nil {
+			return nil
+		}
+		return evt
+	},
+	"TransitionEnd": func(data []byte) any {
+		evt := &TransitionEndEvent{}
+		err := json.Unmarshal(data, evt)
+		if err != nil {
+			return nil
+		}
+		return evt
+	},
+	"TransitionListChanged": func(data []byte) any {
+		evt := &TransitionListChangedEvent{}
+		err := json.Unmarshal(data, evt)
+		if err != nil {
+			return nil
+		}
+		return evt
+	},
+	"TransitionVideoEnd": func(data []byte) any {
+		evt := &TransitionVideoEndEvent{}
+		err := json.Unmarshal(data, evt)
+		if err != nil {
+			return nil
+		}
+		return evt
+	},
+	"VirtualCamStarted": func(data []byte) any {
+		evt := &VirtualCamStartedEvent{}
+		err := json.Unmarshal(data, evt)
+		if err != nil {
+			return nil
+		}
+		return evt
+	},
+	"VirtualCamStopped": func(data []byte) any {
+		evt := &VirtualCamStoppedEvent{}
+		err := json.Unmarshal(data, evt)
+		if err != nil {
+			return nil
+		}
+		return evt
+	},
 }

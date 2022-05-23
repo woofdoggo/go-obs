@@ -6,14 +6,14 @@ import (
 	obs "github.com/woofdoggo/go-obs"
 )
 
-func TestConnect(t *testing.T) {
+func connect(t *testing.T) *obs.Client {
 	c := obs.Client{}
 	needsAuth, _, err := c.Connect("localhost:4440")
 	if err != nil {
 		t.Error(err)
 	}
 	if !needsAuth {
-		return
+		return &c
 	}
 	if needsAuth {
 		err = c.Authenticate("password")
@@ -21,4 +21,9 @@ func TestConnect(t *testing.T) {
 			t.Error(err)
 		}
 	}
+	return &c
+}
+
+func TestConnect(t *testing.T) {
+	connect(t)
 }
