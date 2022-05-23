@@ -12,26 +12,12 @@ import (
 
 type Client struct {
 	connected bool
-	ready     bool
 	auth      *GetAuthRequiredResponse
 	conn      *websocket.Conn
 	url       string
 	errMap    map[string]chan error
 	recvMap   map[string]chan []byte
 	mx        sync.Mutex
-}
-
-func NewClient(url string) Client {
-	return Client{
-		false,
-		false,
-		nil,
-		nil,
-		url,
-		make(map[string]chan error),
-		make(map[string]chan []byte),
-		sync.Mutex{},
-	}
 }
 
 func (c *Client) Authenticate(password string) error {
@@ -51,18 +37,21 @@ func (c *Client) Authenticate(password string) error {
 	if err != nil {
 		return err
 	}
-	c.ready = true
 	return nil
 }
 
-func (c *Client) Connect() (bool, chan error, error) {
-	conn, _, err := websocket.DefaultDialer.Dial(c.url, nil)
+func (c *Client) Connect(url string) (bool, chan error, error) {
+	c.url = url
+	c.errMap = make(map[string]chan error)
+	c.recvMap = make(map[string]chan []byte)
+
+	conn, _, err := websocket.DefaultDialer.Dial("ws://"+c.url, nil)
 	if err != nil {
-		conn.Close()
 		return false, nil, err
 	}
 	errch := c.poll()
 	c.conn = conn
+	c.connected = true
 	res, err := NewGetAuthRequiredRequest(c)
 	if err != nil {
 		conn.Close()
@@ -70,10 +59,7 @@ func (c *Client) Connect() (bool, chan error, error) {
 	}
 	if res.AuthRequired {
 		c.auth = res
-	} else {
-		c.ready = true
 	}
-	c.connected = true
 	return res.AuthRequired, errch, nil
 }
 
@@ -103,16 +89,22 @@ func (c *Client) poll() chan error {
 				if status, ok := m["status"]; ok {
 					if status == "error" {
 						errMsg := m["error"]
+						c.mx.Lock()
 						c.errMap[id.(string)] <- errors.New(errMsg.(string))
+						c.mx.Unlock()
 					} else {
+						c.mx.Lock()
 						c.recvMap[id.(string)] <- data
+						c.mx.Unlock()
 					}
 				} else {
 					errch <- errors.New("no status")
 					return
 				}
+				c.mx.Lock()
 				delete(c.errMap, id.(string))
 				delete(c.recvMap, id.(string))
+				c.mx.Unlock()
 			} else {
 				errch <- errors.New("no message-id")
 				return
@@ -122,14 +114,10 @@ func (c *Client) poll() chan error {
 	return errch
 }
 
-func (c *Client) send(data interface{}, id string, errch chan error) chan []byte {
+func (c *Client) send(data []byte, id string, errch chan error) chan []byte {
 	resch := make(chan []byte)
 	if !c.connected {
 		errch <- errors.New("client not connected")
-		return resch
-	}
-	if !c.ready {
-		errch <- errors.New("client not authenticated")
 		return resch
 	}
 	go func() {
@@ -137,7 +125,7 @@ func (c *Client) send(data interface{}, id string, errch chan error) chan []byte
 		defer c.mx.Unlock()
 		c.errMap[id] = errch
 		c.recvMap[id] = resch
-		err := c.conn.WriteJSON(data)
+		err := c.conn.WriteMessage(websocket.TextMessage, data)
 		if err != nil {
 			errch <- err
 			delete(c.errMap, id)

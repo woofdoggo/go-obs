@@ -7,7 +7,7 @@ type eventData struct {
 }
 
 type reqData struct {
-	RequestType string `json:"requestType"`
+	RequestType string `json:"request-type"`
 	MessageId   string `json:"message-id"`
 }
 

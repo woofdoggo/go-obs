@@ -12,7 +12,8 @@ func writeRequests(reqs []Request) {
         "encoding/json"
 
         "github.com/google/uuid"
-    )`)
+    )
+    `)
 
 	for _, r := range reqs {
 		// Write request type.
@@ -56,12 +57,16 @@ func writeRequests(reqs []Request) {
 		}
 		buf.WriteString("}\n")
 		buf.WriteString(fmt.Sprintf(`
-            recvch := c.send(req, uuid, errch)
+            jdata, err := json.Marshal(&req)
+            if err != nil {
+                return nil, err
+            }
+            recvch := c.send(jdata, uuid, errch)
             defer close(recvch)
             select {
             case val := <-recvch:
                 res := &%sResponse{}
-                err := json.Unmarshal(val, res)
+                err = json.Unmarshal(val, res)
                 if err != nil {
                     return nil, err
                 }
