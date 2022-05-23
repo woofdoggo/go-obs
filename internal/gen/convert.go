@@ -1,6 +1,9 @@
 package main
 
-import "strings"
+import (
+	"sort"
+	"strings"
+)
 
 var typeMapping = map[string]string{
 	"number":  "float64",
@@ -32,12 +35,18 @@ func convert(j *JsonProtocol) Protocol {
 			proto.Events = append(proto.Events, convertEvent(e))
 		}
 	}
+	sort.Slice(proto.Events, func(a, b int) bool {
+		return proto.Events[a].Name < proto.Events[b].Name
+	})
 
 	for _, v := range j.Requests {
 		for _, r := range v {
 			proto.Requests = append(proto.Requests, convertRequest(r))
 		}
 	}
+	sort.Slice(proto.Requests, func(a, b int) bool {
+		return proto.Requests[a].Name < proto.Requests[b].Name
+	})
 
 	return proto
 }
