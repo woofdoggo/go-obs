@@ -8,6 +8,10 @@ import (
 func writeEvents(events []Event) {
 	buf := bytes.Buffer{}
 	buf.WriteString(GO_OBS_PACKAGE)
+	buf.WriteString("import \"encoding/json\"\n\n")
+	convBuf := bytes.Buffer{}
+	convBuf.WriteString("var eventConverters = map[string]func([]byte) any {\n")
+
 	for _, e := range events {
 		buf.WriteString(wrapComment(e.Docs))
 		buf.WriteString(fmt.Sprintf("type %sEvent struct {\n", e.Name))
@@ -23,6 +27,18 @@ func writeEvents(events []Event) {
 			buf.WriteString(str)
 		}
 		buf.WriteString("}\n\n")
+		convBuf.WriteString(fmt.Sprintf(
+			`"%s": func(data []byte) any {
+            evt := &%sEvent{}
+            err := json.Unmarshal(data, evt)
+            if err != nil {
+                return nil
+            }
+            return evt
+        },
+        `, e.Name, e.Name))
 	}
+	convBuf.WriteRune('}')
+	buf.Write(convBuf.Bytes())
 	fmtWrite("./gen_events.go", buf)
 }
