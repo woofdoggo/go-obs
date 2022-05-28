@@ -51,7 +51,7 @@ func writeRequests(reqs []Request) {
 		buf.WriteString("}\n\n")
 
 		// Write new request function.
-		buf.WriteString(fmt.Sprintf("func New%sRequest(c *Client, ", r.Name))
+		buf.WriteString(fmt.Sprintf("func (c *Client) %s(", r.Name))
 		for _, p := range r.Parameters {
 			var typeStr string
 			if _, ok := p.Type.(StructType); ok {
