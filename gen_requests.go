@@ -20,7 +20,7 @@ type AddFilterToSourceRequest struct {
 	FilterSettings interface{} `json:"filterSettings"`
 }
 
-func NewAddFilterToSourceRequest(c *Client, SourceName string, FilterName string, FilterType string, FilterSettings interface{}) (*AddFilterToSourceResponse, error) {
+func (c *Client) AddFilterToSource(SourceName string, FilterName string, FilterType string, FilterSettings interface{}) (*AddFilterToSourceResponse, error) {
 	uuid := uuid.NewString()
 	errch := make(chan error)
 	defer close(errch)
@@ -70,7 +70,7 @@ type AddSceneItemRequest struct {
 	SetVisible *bool `json:"setVisible,omitempty"`
 }
 
-func NewAddSceneItemRequest(c *Client, SceneName string, SourceName string, SetVisible *bool) (*AddSceneItemResponse, error) {
+func (c *Client) AddSceneItem(SceneName string, SourceName string, SetVisible *bool) (*AddSceneItemResponse, error) {
 	uuid := uuid.NewString()
 	errch := make(chan error)
 	defer close(errch)
@@ -116,7 +116,7 @@ type AuthenticateRequest struct {
 	Auth string `json:"auth"`
 }
 
-func NewAuthenticateRequest(c *Client, Auth string) (*AuthenticateResponse, error) {
+func (c *Client) Authenticate(Auth string) (*AuthenticateResponse, error) {
 	uuid := uuid.NewString()
 	errch := make(chan error)
 	defer close(errch)
@@ -160,7 +160,7 @@ type BroadcastCustomMessageRequest struct {
 	Data interface{} `json:"data"`
 }
 
-func NewBroadcastCustomMessageRequest(c *Client, Realm string, Data interface{}) (*BroadcastCustomMessageResponse, error) {
+func (c *Client) BroadcastCustomMessage(Realm string, Data interface{}) (*BroadcastCustomMessageResponse, error) {
 	uuid := uuid.NewString()
 	errch := make(chan error)
 	defer close(errch)
@@ -203,7 +203,7 @@ type CreateSceneRequest struct {
 	SceneName string `json:"sceneName"`
 }
 
-func NewCreateSceneRequest(c *Client, SceneName string) (*CreateSceneResponse, error) {
+func (c *Client) CreateScene(SceneName string) (*CreateSceneResponse, error) {
 	uuid := uuid.NewString()
 	errch := make(chan error)
 	defer close(errch)
@@ -253,7 +253,7 @@ type CreateSourceRequest struct {
 	SetVisible *bool `json:"setVisible,omitempty"`
 }
 
-func NewCreateSourceRequest(c *Client, SourceName string, SourceKind string, SceneName string, SourceSettings interface{}, SetVisible *bool) (*CreateSourceResponse, error) {
+func (c *Client) CreateSource(SourceName string, SourceKind string, SceneName string, SourceSettings interface{}, SetVisible *bool) (*CreateSourceResponse, error) {
 	uuid := uuid.NewString()
 	errch := make(chan error)
 	defer close(errch)
@@ -303,7 +303,7 @@ type DeleteSceneItemRequest struct {
 	Item DeleteSceneItemItem `json:"item"`
 }
 
-func NewDeleteSceneItemRequest(c *Client, Scene string, Item DeleteSceneItemItem) (*DeleteSceneItemResponse, error) {
+func (c *Client) DeleteSceneItem(Scene string, Item DeleteSceneItemItem) (*DeleteSceneItemResponse, error) {
 	uuid := uuid.NewString()
 	errch := make(chan error)
 	defer close(errch)
@@ -344,7 +344,7 @@ type DisableStudioModeRequest struct {
 	reqData
 }
 
-func NewDisableStudioModeRequest(c *Client) (*DisableStudioModeResponse, error) {
+func (c *Client) DisableStudioMode() (*DisableStudioModeResponse, error) {
 	uuid := uuid.NewString()
 	errch := make(chan error)
 	defer close(errch)
@@ -389,7 +389,7 @@ type DuplicateSceneItemRequest struct {
 	Item DuplicateSceneItemItem `json:"item"`
 }
 
-func NewDuplicateSceneItemRequest(c *Client, FromScene string, ToScene string, Item DuplicateSceneItemItem) (*DuplicateSceneItemResponse, error) {
+func (c *Client) DuplicateSceneItem(FromScene string, ToScene string, Item DuplicateSceneItemItem) (*DuplicateSceneItemResponse, error) {
 	uuid := uuid.NewString()
 	errch := make(chan error)
 	defer close(errch)
@@ -440,7 +440,7 @@ type EnableStudioModeRequest struct {
 	reqData
 }
 
-func NewEnableStudioModeRequest(c *Client) (*EnableStudioModeResponse, error) {
+func (c *Client) EnableStudioMode() (*EnableStudioModeResponse, error) {
 	uuid := uuid.NewString()
 	errch := make(chan error)
 	defer close(errch)
@@ -483,7 +483,7 @@ type ExecuteBatchRequest struct {
 	AbortOnFail *bool `json:"abortOnFail,omitempty"`
 }
 
-func NewExecuteBatchRequest(c *Client, Requests []ExecuteBatchRequests, AbortOnFail *bool) (*ExecuteBatchResponse, error) {
+func (c *Client) ExecuteBatch(Requests []ExecuteBatchRequests, AbortOnFail *bool) (*ExecuteBatchResponse, error) {
 	uuid := uuid.NewString()
 	errch := make(chan error)
 	defer close(errch)
@@ -535,7 +535,7 @@ type GetAudioActiveRequest struct {
 	SourceName string `json:"sourceName"`
 }
 
-func NewGetAudioActiveRequest(c *Client, SourceName string) (*GetAudioActiveResponse, error) {
+func (c *Client) GetAudioActive(SourceName string) (*GetAudioActiveResponse, error) {
 	uuid := uuid.NewString()
 	errch := make(chan error)
 	defer close(errch)
@@ -579,7 +579,7 @@ type GetAudioMonitorTypeRequest struct {
 	SourceName string `json:"sourceName"`
 }
 
-func NewGetAudioMonitorTypeRequest(c *Client, SourceName string) (*GetAudioMonitorTypeResponse, error) {
+func (c *Client) GetAudioMonitorType(SourceName string) (*GetAudioMonitorTypeResponse, error) {
 	uuid := uuid.NewString()
 	errch := make(chan error)
 	defer close(errch)
@@ -623,7 +623,7 @@ type GetAudioTracksRequest struct {
 	SourceName string `json:"sourceName"`
 }
 
-func NewGetAudioTracksRequest(c *Client, SourceName string) (*GetAudioTracksResponse, error) {
+func (c *Client) GetAudioTracks(SourceName string) (*GetAudioTracksResponse, error) {
 	uuid := uuid.NewString()
 	errch := make(chan error)
 	defer close(errch)
@@ -671,7 +671,7 @@ type GetAuthRequiredRequest struct {
 	reqData
 }
 
-func NewGetAuthRequiredRequest(c *Client) (*GetAuthRequiredResponse, error) {
+func (c *Client) GetAuthRequired() (*GetAuthRequiredResponse, error) {
 	uuid := uuid.NewString()
 	errch := make(chan error)
 	defer close(errch)
@@ -719,7 +719,7 @@ type GetBrowserSourcePropertiesRequest struct {
 	Source string `json:"source"`
 }
 
-func NewGetBrowserSourcePropertiesRequest(c *Client, Source string) (*GetBrowserSourcePropertiesResponse, error) {
+func (c *Client) GetBrowserSourceProperties(Source string) (*GetBrowserSourcePropertiesResponse, error) {
 	uuid := uuid.NewString()
 	errch := make(chan error)
 	defer close(errch)
@@ -777,7 +777,7 @@ type GetCurrentProfileRequest struct {
 	reqData
 }
 
-func NewGetCurrentProfileRequest(c *Client) (*GetCurrentProfileResponse, error) {
+func (c *Client) GetCurrentProfile() (*GetCurrentProfileResponse, error) {
 	uuid := uuid.NewString()
 	errch := make(chan error)
 	defer close(errch)
@@ -818,7 +818,7 @@ type GetCurrentSceneRequest struct {
 	reqData
 }
 
-func NewGetCurrentSceneRequest(c *Client) (*GetCurrentSceneResponse, error) {
+func (c *Client) GetCurrentScene() (*GetCurrentSceneResponse, error) {
 	uuid := uuid.NewString()
 	errch := make(chan error)
 	defer close(errch)
@@ -861,7 +861,7 @@ type GetCurrentSceneCollectionRequest struct {
 	reqData
 }
 
-func NewGetCurrentSceneCollectionRequest(c *Client) (*GetCurrentSceneCollectionResponse, error) {
+func (c *Client) GetCurrentSceneCollection() (*GetCurrentSceneCollectionResponse, error) {
 	uuid := uuid.NewString()
 	errch := make(chan error)
 	defer close(errch)
@@ -903,7 +903,7 @@ type GetCurrentTransitionRequest struct {
 	reqData
 }
 
-func NewGetCurrentTransitionRequest(c *Client) (*GetCurrentTransitionResponse, error) {
+func (c *Client) GetCurrentTransition() (*GetCurrentTransitionResponse, error) {
 	uuid := uuid.NewString()
 	errch := make(chan error)
 	defer close(errch)
@@ -946,7 +946,7 @@ type GetFilenameFormattingRequest struct {
 	reqData
 }
 
-func NewGetFilenameFormattingRequest(c *Client) (*GetFilenameFormattingResponse, error) {
+func (c *Client) GetFilenameFormatting() (*GetFilenameFormattingResponse, error) {
 	uuid := uuid.NewString()
 	errch := make(chan error)
 	defer close(errch)
@@ -992,7 +992,7 @@ type GetMediaDurationRequest struct {
 	SourceName string `json:"sourceName"`
 }
 
-func NewGetMediaDurationRequest(c *Client, SourceName string) (*GetMediaDurationResponse, error) {
+func (c *Client) GetMediaDuration(SourceName string) (*GetMediaDurationResponse, error) {
 	uuid := uuid.NewString()
 	errch := make(chan error)
 	defer close(errch)
@@ -1034,7 +1034,7 @@ type GetMediaSourcesListRequest struct {
 	reqData
 }
 
-func NewGetMediaSourcesListRequest(c *Client) (*GetMediaSourcesListResponse, error) {
+func (c *Client) GetMediaSourcesList() (*GetMediaSourcesListResponse, error) {
 	uuid := uuid.NewString()
 	errch := make(chan error)
 	defer close(errch)
@@ -1086,7 +1086,7 @@ type GetMediaStateRequest struct {
 	SourceName string `json:"sourceName"`
 }
 
-func NewGetMediaStateRequest(c *Client, SourceName string) (*GetMediaStateResponse, error) {
+func (c *Client) GetMediaState(SourceName string) (*GetMediaStateResponse, error) {
 	uuid := uuid.NewString()
 	errch := make(chan error)
 	defer close(errch)
@@ -1132,7 +1132,7 @@ type GetMediaTimeRequest struct {
 	SourceName string `json:"sourceName"`
 }
 
-func NewGetMediaTimeRequest(c *Client, SourceName string) (*GetMediaTimeResponse, error) {
+func (c *Client) GetMediaTime(SourceName string) (*GetMediaTimeResponse, error) {
 	uuid := uuid.NewString()
 	errch := make(chan error)
 	defer close(errch)
@@ -1176,7 +1176,7 @@ type GetMuteRequest struct {
 	Source string `json:"source"`
 }
 
-func NewGetMuteRequest(c *Client, Source string) (*GetMuteResponse, error) {
+func (c *Client) GetMute(Source string) (*GetMuteResponse, error) {
 	uuid := uuid.NewString()
 	errch := make(chan error)
 	defer close(errch)
@@ -1222,7 +1222,7 @@ type GetOutputInfoRequest struct {
 	OutputName string `json:"outputName"`
 }
 
-func NewGetOutputInfoRequest(c *Client, OutputName string) (*GetOutputInfoResponse, error) {
+func (c *Client) GetOutputInfo(OutputName string) (*GetOutputInfoResponse, error) {
 	uuid := uuid.NewString()
 	errch := make(chan error)
 	defer close(errch)
@@ -1265,7 +1265,7 @@ type GetPreviewSceneRequest struct {
 	reqData
 }
 
-func NewGetPreviewSceneRequest(c *Client) (*GetPreviewSceneResponse, error) {
+func (c *Client) GetPreviewScene() (*GetPreviewSceneResponse, error) {
 	uuid := uuid.NewString()
 	errch := make(chan error)
 	defer close(errch)
@@ -1307,7 +1307,7 @@ type GetRecordingFolderRequest struct {
 	reqData
 }
 
-func NewGetRecordingFolderRequest(c *Client) (*GetRecordingFolderResponse, error) {
+func (c *Client) GetRecordingFolder() (*GetRecordingFolderResponse, error) {
 	uuid := uuid.NewString()
 	errch := make(chan error)
 	defer close(errch)
@@ -1348,7 +1348,7 @@ type GetRecordingStatusRequest struct {
 	reqData
 }
 
-func NewGetRecordingStatusRequest(c *Client) (*GetRecordingStatusResponse, error) {
+func (c *Client) GetRecordingStatus() (*GetRecordingStatusResponse, error) {
 	uuid := uuid.NewString()
 	errch := make(chan error)
 	defer close(errch)
@@ -1395,7 +1395,7 @@ type GetReplayBufferStatusRequest struct {
 	reqData
 }
 
-func NewGetReplayBufferStatusRequest(c *Client) (*GetReplayBufferStatusResponse, error) {
+func (c *Client) GetReplayBufferStatus() (*GetReplayBufferStatusResponse, error) {
 	uuid := uuid.NewString()
 	errch := make(chan error)
 	defer close(errch)
@@ -1439,7 +1439,7 @@ type GetSceneItemListRequest struct {
 	SceneName string `json:"sceneName,omitempty"`
 }
 
-func NewGetSceneItemListRequest(c *Client, SceneName string) (*GetSceneItemListResponse, error) {
+func (c *Client) GetSceneItemList(SceneName string) (*GetSceneItemListResponse, error) {
 	uuid := uuid.NewString()
 	errch := make(chan error)
 	defer close(errch)
@@ -1498,7 +1498,7 @@ type GetSceneItemPropertiesRequest struct {
 	Item GetSceneItemPropertiesItem `json:"item"`
 }
 
-func NewGetSceneItemPropertiesRequest(c *Client, SceneName string, Item GetSceneItemPropertiesItem) (*GetSceneItemPropertiesResponse, error) {
+func (c *Client) GetSceneItemProperties(SceneName string, Item GetSceneItemPropertiesItem) (*GetSceneItemPropertiesResponse, error) {
 	uuid := uuid.NewString()
 	errch := make(chan error)
 	defer close(errch)
@@ -1612,7 +1612,7 @@ type GetSceneListRequest struct {
 	reqData
 }
 
-func NewGetSceneListRequest(c *Client) (*GetSceneListResponse, error) {
+func (c *Client) GetSceneList() (*GetSceneListResponse, error) {
 	uuid := uuid.NewString()
 	errch := make(chan error)
 	defer close(errch)
@@ -1658,7 +1658,7 @@ type GetSceneTransitionOverrideRequest struct {
 	SceneName string `json:"sceneName"`
 }
 
-func NewGetSceneTransitionOverrideRequest(c *Client, SceneName string) (*GetSceneTransitionOverrideResponse, error) {
+func (c *Client) GetSceneTransitionOverride(SceneName string) (*GetSceneTransitionOverrideResponse, error) {
 	uuid := uuid.NewString()
 	errch := make(chan error)
 	defer close(errch)
@@ -1706,7 +1706,7 @@ type GetSourceActiveRequest struct {
 	SourceName string `json:"sourceName"`
 }
 
-func NewGetSourceActiveRequest(c *Client, SourceName string) (*GetSourceActiveResponse, error) {
+func (c *Client) GetSourceActive(SourceName string) (*GetSourceActiveResponse, error) {
 	uuid := uuid.NewString()
 	errch := make(chan error)
 	defer close(errch)
@@ -1750,7 +1750,7 @@ type GetSourceDefaultSettingsRequest struct {
 	SourceKind string `json:"sourceKind"`
 }
 
-func NewGetSourceDefaultSettingsRequest(c *Client, SourceKind string) (*GetSourceDefaultSettingsResponse, error) {
+func (c *Client) GetSourceDefaultSettings(SourceKind string) (*GetSourceDefaultSettingsResponse, error) {
 	uuid := uuid.NewString()
 	errch := make(chan error)
 	defer close(errch)
@@ -1798,7 +1798,7 @@ type GetSourceFilterInfoRequest struct {
 	FilterName string `json:"filterName"`
 }
 
-func NewGetSourceFilterInfoRequest(c *Client, SourceName string, FilterName string) (*GetSourceFilterInfoResponse, error) {
+func (c *Client) GetSourceFilterInfo(SourceName string, FilterName string) (*GetSourceFilterInfoResponse, error) {
 	uuid := uuid.NewString()
 	errch := make(chan error)
 	defer close(errch)
@@ -1849,7 +1849,7 @@ type GetSourceFiltersRequest struct {
 	SourceName string `json:"sourceName"`
 }
 
-func NewGetSourceFiltersRequest(c *Client, SourceName string) (*GetSourceFiltersResponse, error) {
+func (c *Client) GetSourceFilters(SourceName string) (*GetSourceFiltersResponse, error) {
 	uuid := uuid.NewString()
 	errch := make(chan error)
 	defer close(errch)
@@ -1905,7 +1905,7 @@ type GetSourceSettingsRequest struct {
 	SourceType string `json:"sourceType,omitempty"`
 }
 
-func NewGetSourceSettingsRequest(c *Client, SourceName string, SourceType string) (*GetSourceSettingsResponse, error) {
+func (c *Client) GetSourceSettings(SourceName string, SourceType string) (*GetSourceSettingsResponse, error) {
 	uuid := uuid.NewString()
 	errch := make(chan error)
 	defer close(errch)
@@ -1953,7 +1953,7 @@ type GetSourceTypesListRequest struct {
 	reqData
 }
 
-func NewGetSourceTypesListRequest(c *Client) (*GetSourceTypesListResponse, error) {
+func (c *Client) GetSourceTypesList() (*GetSourceTypesListResponse, error) {
 	uuid := uuid.NewString()
 	errch := make(chan error)
 	defer close(errch)
@@ -2022,7 +2022,7 @@ type GetSourcesListRequest struct {
 	reqData
 }
 
-func NewGetSourcesListRequest(c *Client) (*GetSourcesListResponse, error) {
+func (c *Client) GetSourcesList() (*GetSourcesListResponse, error) {
 	uuid := uuid.NewString()
 	errch := make(chan error)
 	defer close(errch)
@@ -2071,7 +2071,7 @@ type GetSpecialSourcesRequest struct {
 	reqData
 }
 
-func NewGetSpecialSourcesRequest(c *Client) (*GetSpecialSourcesResponse, error) {
+func (c *Client) GetSpecialSources() (*GetSpecialSourcesResponse, error) {
 	uuid := uuid.NewString()
 	errch := make(chan error)
 	defer close(errch)
@@ -2120,7 +2120,7 @@ type GetStatsRequest struct {
 	reqData
 }
 
-func NewGetStatsRequest(c *Client) (*GetStatsResponse, error) {
+func (c *Client) GetStats() (*GetStatsResponse, error) {
 	uuid := uuid.NewString()
 	errch := make(chan error)
 	defer close(errch)
@@ -2161,7 +2161,7 @@ type GetStreamSettingsRequest struct {
 	reqData
 }
 
-func NewGetStreamSettingsRequest(c *Client) (*GetStreamSettingsResponse, error) {
+func (c *Client) GetStreamSettings() (*GetStreamSettingsResponse, error) {
 	uuid := uuid.NewString()
 	errch := make(chan error)
 	defer close(errch)
@@ -2219,7 +2219,7 @@ type GetStreamingStatusRequest struct {
 	reqData
 }
 
-func NewGetStreamingStatusRequest(c *Client) (*GetStreamingStatusResponse, error) {
+func (c *Client) GetStreamingStatus() (*GetStreamingStatusResponse, error) {
 	uuid := uuid.NewString()
 	errch := make(chan error)
 	defer close(errch)
@@ -2275,7 +2275,7 @@ type GetStudioModeStatusRequest struct {
 	reqData
 }
 
-func NewGetStudioModeStatusRequest(c *Client) (*GetStudioModeStatusResponse, error) {
+func (c *Client) GetStudioModeStatus() (*GetStudioModeStatusResponse, error) {
 	uuid := uuid.NewString()
 	errch := make(chan error)
 	defer close(errch)
@@ -2318,7 +2318,7 @@ type GetSyncOffsetRequest struct {
 	Source string `json:"source"`
 }
 
-func NewGetSyncOffsetRequest(c *Client, Source string) (*GetSyncOffsetResponse, error) {
+func (c *Client) GetSyncOffset(Source string) (*GetSyncOffsetResponse, error) {
 	uuid := uuid.NewString()
 	errch := make(chan error)
 	defer close(errch)
@@ -2364,7 +2364,7 @@ type GetTextFreetype2PropertiesRequest struct {
 	Source string `json:"source"`
 }
 
-func NewGetTextFreetype2PropertiesRequest(c *Client, Source string) (*GetTextFreetype2PropertiesResponse, error) {
+func (c *Client) GetTextFreetype2Properties(Source string) (*GetTextFreetype2PropertiesResponse, error) {
 	uuid := uuid.NewString()
 	errch := make(chan error)
 	defer close(errch)
@@ -2441,7 +2441,7 @@ type GetTextGDIPlusPropertiesRequest struct {
 	Source string `json:"source"`
 }
 
-func NewGetTextGDIPlusPropertiesRequest(c *Client, Source string) (*GetTextGDIPlusPropertiesResponse, error) {
+func (c *Client) GetTextGDIPlusProperties(Source string) (*GetTextGDIPlusPropertiesResponse, error) {
 	uuid := uuid.NewString()
 	errch := make(chan error)
 	defer close(errch)
@@ -2540,7 +2540,7 @@ type GetTransitionDurationRequest struct {
 	reqData
 }
 
-func NewGetTransitionDurationRequest(c *Client) (*GetTransitionDurationResponse, error) {
+func (c *Client) GetTransitionDuration() (*GetTransitionDurationResponse, error) {
 	uuid := uuid.NewString()
 	errch := make(chan error)
 	defer close(errch)
@@ -2581,7 +2581,7 @@ type GetTransitionListRequest struct {
 	reqData
 }
 
-func NewGetTransitionListRequest(c *Client) (*GetTransitionListResponse, error) {
+func (c *Client) GetTransitionList() (*GetTransitionListResponse, error) {
 	uuid := uuid.NewString()
 	errch := make(chan error)
 	defer close(errch)
@@ -2627,7 +2627,7 @@ type GetTransitionPositionRequest struct {
 	reqData
 }
 
-func NewGetTransitionPositionRequest(c *Client) (*GetTransitionPositionResponse, error) {
+func (c *Client) GetTransitionPosition() (*GetTransitionPositionResponse, error) {
 	uuid := uuid.NewString()
 	errch := make(chan error)
 	defer close(errch)
@@ -2671,7 +2671,7 @@ type GetTransitionSettingsRequest struct {
 	TransitionName string `json:"transitionName"`
 }
 
-func NewGetTransitionSettingsRequest(c *Client, TransitionName string) (*GetTransitionSettingsResponse, error) {
+func (c *Client) GetTransitionSettings(TransitionName string) (*GetTransitionSettingsResponse, error) {
 	uuid := uuid.NewString()
 	errch := make(chan error)
 	defer close(errch)
@@ -2713,7 +2713,7 @@ type GetVersionRequest struct {
 	reqData
 }
 
-func NewGetVersionRequest(c *Client) (*GetVersionResponse, error) {
+func (c *Client) GetVersion() (*GetVersionResponse, error) {
 	uuid := uuid.NewString()
 	errch := make(chan error)
 	defer close(errch)
@@ -2764,7 +2764,7 @@ type GetVideoInfoRequest struct {
 	reqData
 }
 
-func NewGetVideoInfoRequest(c *Client) (*GetVideoInfoResponse, error) {
+func (c *Client) GetVideoInfo() (*GetVideoInfoResponse, error) {
 	uuid := uuid.NewString()
 	errch := make(chan error)
 	defer close(errch)
@@ -2821,7 +2821,7 @@ type GetVirtualCamStatusRequest struct {
 	reqData
 }
 
-func NewGetVirtualCamStatusRequest(c *Client) (*GetVirtualCamStatusResponse, error) {
+func (c *Client) GetVirtualCamStatus() (*GetVirtualCamStatusResponse, error) {
 	uuid := uuid.NewString()
 	errch := make(chan error)
 	defer close(errch)
@@ -2870,7 +2870,7 @@ type GetVolumeRequest struct {
 	UseDecibel *bool `json:"useDecibel,omitempty"`
 }
 
-func NewGetVolumeRequest(c *Client, Source string, UseDecibel *bool) (*GetVolumeResponse, error) {
+func (c *Client) GetVolume(Source string, UseDecibel *bool) (*GetVolumeResponse, error) {
 	uuid := uuid.NewString()
 	errch := make(chan error)
 	defer close(errch)
@@ -2918,7 +2918,7 @@ type ListOutputsRequest struct {
 	reqData
 }
 
-func NewListOutputsRequest(c *Client) (*ListOutputsResponse, error) {
+func (c *Client) ListOutputs() (*ListOutputsResponse, error) {
 	uuid := uuid.NewString()
 	errch := make(chan error)
 	defer close(errch)
@@ -2959,7 +2959,7 @@ type ListProfilesRequest struct {
 	reqData
 }
 
-func NewListProfilesRequest(c *Client) (*ListProfilesResponse, error) {
+func (c *Client) ListProfiles() (*ListProfilesResponse, error) {
 	uuid := uuid.NewString()
 	errch := make(chan error)
 	defer close(errch)
@@ -3003,7 +3003,7 @@ type ListSceneCollectionsRequest struct {
 	reqData
 }
 
-func NewListSceneCollectionsRequest(c *Client) (*ListSceneCollectionsResponse, error) {
+func (c *Client) ListSceneCollections() (*ListSceneCollectionsResponse, error) {
 	uuid := uuid.NewString()
 	errch := make(chan error)
 	defer close(errch)
@@ -3051,7 +3051,7 @@ type MoveSourceFilterRequest struct {
 	MovementType string `json:"movementType"`
 }
 
-func NewMoveSourceFilterRequest(c *Client, SourceName string, FilterName string, MovementType string) (*MoveSourceFilterResponse, error) {
+func (c *Client) MoveSourceFilter(SourceName string, FilterName string, MovementType string) (*MoveSourceFilterResponse, error) {
 	uuid := uuid.NewString()
 	errch := make(chan error)
 	defer close(errch)
@@ -3096,7 +3096,7 @@ type NextMediaRequest struct {
 	SourceName string `json:"sourceName"`
 }
 
-func NewNextMediaRequest(c *Client, SourceName string) (*NextMediaResponse, error) {
+func (c *Client) NextMedia(SourceName string) (*NextMediaResponse, error) {
 	uuid := uuid.NewString()
 	errch := make(chan error)
 	defer close(errch)
@@ -3150,7 +3150,7 @@ type OpenProjectorRequest struct {
 	Name string `json:"name,omitempty"`
 }
 
-func NewOpenProjectorRequest(c *Client, Type string, Monitor *int, Geometry string, Name string) (*OpenProjectorResponse, error) {
+func (c *Client) OpenProjector(Type string, Monitor *int, Geometry string, Name string) (*OpenProjectorResponse, error) {
 	uuid := uuid.NewString()
 	errch := make(chan error)
 	defer close(errch)
@@ -3194,7 +3194,7 @@ type PauseRecordingRequest struct {
 	reqData
 }
 
-func NewPauseRecordingRequest(c *Client) (*PauseRecordingResponse, error) {
+func (c *Client) PauseRecording() (*PauseRecordingResponse, error) {
 	uuid := uuid.NewString()
 	errch := make(chan error)
 	defer close(errch)
@@ -3239,7 +3239,7 @@ type PlayPauseMediaRequest struct {
 	PlayPause bool `json:"playPause"`
 }
 
-func NewPlayPauseMediaRequest(c *Client, SourceName string, PlayPause bool) (*PlayPauseMediaResponse, error) {
+func (c *Client) PlayPauseMedia(SourceName string, PlayPause bool) (*PlayPauseMediaResponse, error) {
 	uuid := uuid.NewString()
 	errch := make(chan error)
 	defer close(errch)
@@ -3283,7 +3283,7 @@ type PreviousMediaRequest struct {
 	SourceName string `json:"sourceName"`
 }
 
-func NewPreviousMediaRequest(c *Client, SourceName string) (*PreviousMediaResponse, error) {
+func (c *Client) PreviousMedia(SourceName string) (*PreviousMediaResponse, error) {
 	uuid := uuid.NewString()
 	errch := make(chan error)
 	defer close(errch)
@@ -3325,7 +3325,7 @@ type RefreshBrowserSourceRequest struct {
 	SourceName string `json:"sourceName"`
 }
 
-func NewRefreshBrowserSourceRequest(c *Client, SourceName string) (*RefreshBrowserSourceResponse, error) {
+func (c *Client) RefreshBrowserSource(SourceName string) (*RefreshBrowserSourceResponse, error) {
 	uuid := uuid.NewString()
 	errch := make(chan error)
 	defer close(errch)
@@ -3367,7 +3367,7 @@ type ReleaseTBarRequest struct {
 	reqData
 }
 
-func NewReleaseTBarRequest(c *Client) (*ReleaseTBarResponse, error) {
+func (c *Client) ReleaseTBar() (*ReleaseTBarResponse, error) {
 	uuid := uuid.NewString()
 	errch := make(chan error)
 	defer close(errch)
@@ -3410,7 +3410,7 @@ type RemoveFilterFromSourceRequest struct {
 	FilterName string `json:"filterName"`
 }
 
-func NewRemoveFilterFromSourceRequest(c *Client, SourceName string, FilterName string) (*RemoveFilterFromSourceResponse, error) {
+func (c *Client) RemoveFilterFromSource(SourceName string, FilterName string) (*RemoveFilterFromSourceResponse, error) {
 	uuid := uuid.NewString()
 	errch := make(chan error)
 	defer close(errch)
@@ -3453,7 +3453,7 @@ type RemoveSceneTransitionOverrideRequest struct {
 	SceneName string `json:"sceneName"`
 }
 
-func NewRemoveSceneTransitionOverrideRequest(c *Client, SceneName string) (*RemoveSceneTransitionOverrideResponse, error) {
+func (c *Client) RemoveSceneTransitionOverride(SceneName string) (*RemoveSceneTransitionOverrideResponse, error) {
 	uuid := uuid.NewString()
 	errch := make(chan error)
 	defer close(errch)
@@ -3498,7 +3498,7 @@ type ReorderSceneItemsRequest struct {
 	Items []ReorderSceneItemsItems `json:"items"`
 }
 
-func NewReorderSceneItemsRequest(c *Client, Scene string, Items []ReorderSceneItemsItems) (*ReorderSceneItemsResponse, error) {
+func (c *Client) ReorderSceneItems(Scene string, Items []ReorderSceneItemsItems) (*ReorderSceneItemsResponse, error) {
 	uuid := uuid.NewString()
 	errch := make(chan error)
 	defer close(errch)
@@ -3545,7 +3545,7 @@ type ReorderSourceFilterRequest struct {
 	NewIndex int `json:"newIndex"`
 }
 
-func NewReorderSourceFilterRequest(c *Client, SourceName string, FilterName string, NewIndex int) (*ReorderSourceFilterResponse, error) {
+func (c *Client) ReorderSourceFilter(SourceName string, FilterName string, NewIndex int) (*ReorderSourceFilterResponse, error) {
 	uuid := uuid.NewString()
 	errch := make(chan error)
 	defer close(errch)
@@ -3592,7 +3592,7 @@ type ResetSceneItemRequest struct {
 	Item ResetSceneItemItem `json:"item"`
 }
 
-func NewResetSceneItemRequest(c *Client, SceneName string, Item ResetSceneItemItem) (*ResetSceneItemResponse, error) {
+func (c *Client) ResetSceneItem(SceneName string, Item ResetSceneItemItem) (*ResetSceneItemResponse, error) {
 	uuid := uuid.NewString()
 	errch := make(chan error)
 	defer close(errch)
@@ -3636,7 +3636,7 @@ type RestartMediaRequest struct {
 	SourceName string `json:"sourceName"`
 }
 
-func NewRestartMediaRequest(c *Client, SourceName string) (*RestartMediaResponse, error) {
+func (c *Client) RestartMedia(SourceName string) (*RestartMediaResponse, error) {
 	uuid := uuid.NewString()
 	errch := make(chan error)
 	defer close(errch)
@@ -3677,7 +3677,7 @@ type ResumeRecordingRequest struct {
 	reqData
 }
 
-func NewResumeRecordingRequest(c *Client) (*ResumeRecordingResponse, error) {
+func (c *Client) ResumeRecording() (*ResumeRecordingResponse, error) {
 	uuid := uuid.NewString()
 	errch := make(chan error)
 	defer close(errch)
@@ -3718,7 +3718,7 @@ type SaveReplayBufferRequest struct {
 	reqData
 }
 
-func NewSaveReplayBufferRequest(c *Client) (*SaveReplayBufferResponse, error) {
+func (c *Client) SaveReplayBuffer() (*SaveReplayBufferResponse, error) {
 	uuid := uuid.NewString()
 	errch := make(chan error)
 	defer close(errch)
@@ -3757,7 +3757,7 @@ type SaveStreamSettingsRequest struct {
 	reqData
 }
 
-func NewSaveStreamSettingsRequest(c *Client) (*SaveStreamSettingsResponse, error) {
+func (c *Client) SaveStreamSettings() (*SaveStreamSettingsResponse, error) {
 	uuid := uuid.NewString()
 	errch := make(chan error)
 	defer close(errch)
@@ -3803,7 +3803,7 @@ type ScrubMediaRequest struct {
 	TimeOffset int `json:"timeOffset"`
 }
 
-func NewScrubMediaRequest(c *Client, SourceName string, TimeOffset int) (*ScrubMediaResponse, error) {
+func (c *Client) ScrubMedia(SourceName string, TimeOffset int) (*ScrubMediaResponse, error) {
 	uuid := uuid.NewString()
 	errch := make(chan error)
 	defer close(errch)
@@ -3846,7 +3846,7 @@ type SendCaptionsRequest struct {
 	Text string `json:"text"`
 }
 
-func NewSendCaptionsRequest(c *Client, Text string) (*SendCaptionsResponse, error) {
+func (c *Client) SendCaptions(Text string) (*SendCaptionsResponse, error) {
 	uuid := uuid.NewString()
 	errch := make(chan error)
 	defer close(errch)
@@ -3890,7 +3890,7 @@ type SetAudioMonitorTypeRequest struct {
 	MonitorType string `json:"monitorType"`
 }
 
-func NewSetAudioMonitorTypeRequest(c *Client, SourceName string, MonitorType string) (*SetAudioMonitorTypeResponse, error) {
+func (c *Client) SetAudioMonitorType(SourceName string, MonitorType string) (*SetAudioMonitorTypeResponse, error) {
 	uuid := uuid.NewString()
 	errch := make(chan error)
 	defer close(errch)
@@ -3937,7 +3937,7 @@ type SetAudioTracksRequest struct {
 	Active bool `json:"active"`
 }
 
-func NewSetAudioTracksRequest(c *Client, SourceName string, Track int, Active bool) (*SetAudioTracksResponse, error) {
+func (c *Client) SetAudioTracks(SourceName string, Track int, Active bool) (*SetAudioTracksResponse, error) {
 	uuid := uuid.NewString()
 	errch := make(chan error)
 	defer close(errch)
@@ -4002,7 +4002,7 @@ type SetBrowserSourcePropertiesRequest struct {
 	Render *bool `json:"render,omitempty"`
 }
 
-func NewSetBrowserSourcePropertiesRequest(c *Client, Source string, IsLocalFile *bool, LocalFile string, Url string, Css string, Width *int, Height *int, Fps *int, Shutdown *bool, Render *bool) (*SetBrowserSourcePropertiesResponse, error) {
+func (c *Client) SetBrowserSourceProperties(Source string, IsLocalFile *bool, LocalFile string, Url string, Css string, Width *int, Height *int, Fps *int, Shutdown *bool, Render *bool) (*SetBrowserSourcePropertiesResponse, error) {
 	uuid := uuid.NewString()
 	errch := make(chan error)
 	defer close(errch)
@@ -4053,7 +4053,7 @@ type SetCurrentProfileRequest struct {
 	ProfileName string `json:"profile-name"`
 }
 
-func NewSetCurrentProfileRequest(c *Client, ProfileName string) (*SetCurrentProfileResponse, error) {
+func (c *Client) SetCurrentProfile(ProfileName string) (*SetCurrentProfileResponse, error) {
 	uuid := uuid.NewString()
 	errch := make(chan error)
 	defer close(errch)
@@ -4095,7 +4095,7 @@ type SetCurrentSceneRequest struct {
 	SceneName string `json:"scene-name"`
 }
 
-func NewSetCurrentSceneRequest(c *Client, SceneName string) (*SetCurrentSceneResponse, error) {
+func (c *Client) SetCurrentScene(SceneName string) (*SetCurrentSceneResponse, error) {
 	uuid := uuid.NewString()
 	errch := make(chan error)
 	defer close(errch)
@@ -4137,7 +4137,7 @@ type SetCurrentSceneCollectionRequest struct {
 	ScName string `json:"sc-name"`
 }
 
-func NewSetCurrentSceneCollectionRequest(c *Client, ScName string) (*SetCurrentSceneCollectionResponse, error) {
+func (c *Client) SetCurrentSceneCollection(ScName string) (*SetCurrentSceneCollectionResponse, error) {
 	uuid := uuid.NewString()
 	errch := make(chan error)
 	defer close(errch)
@@ -4179,7 +4179,7 @@ type SetCurrentTransitionRequest struct {
 	TransitionName string `json:"transition-name"`
 }
 
-func NewSetCurrentTransitionRequest(c *Client, TransitionName string) (*SetCurrentTransitionResponse, error) {
+func (c *Client) SetCurrentTransition(TransitionName string) (*SetCurrentTransitionResponse, error) {
 	uuid := uuid.NewString()
 	errch := make(chan error)
 	defer close(errch)
@@ -4221,7 +4221,7 @@ type SetFilenameFormattingRequest struct {
 	FilenameFormatting string `json:"filename-formatting"`
 }
 
-func NewSetFilenameFormattingRequest(c *Client, FilenameFormatting string) (*SetFilenameFormattingResponse, error) {
+func (c *Client) SetFilenameFormatting(FilenameFormatting string) (*SetFilenameFormattingResponse, error) {
 	uuid := uuid.NewString()
 	errch := make(chan error)
 	defer close(errch)
@@ -4267,7 +4267,7 @@ type SetHeartbeatRequest struct {
 	Enable bool `json:"enable"`
 }
 
-func NewSetHeartbeatRequest(c *Client, Enable bool) (*SetHeartbeatResponse, error) {
+func (c *Client) SetHeartbeat(Enable bool) (*SetHeartbeatResponse, error) {
 	uuid := uuid.NewString()
 	errch := make(chan error)
 	defer close(errch)
@@ -4312,7 +4312,7 @@ type SetMediaTimeRequest struct {
 	Timestamp int `json:"timestamp"`
 }
 
-func NewSetMediaTimeRequest(c *Client, SourceName string, Timestamp int) (*SetMediaTimeResponse, error) {
+func (c *Client) SetMediaTime(SourceName string, Timestamp int) (*SetMediaTimeResponse, error) {
 	uuid := uuid.NewString()
 	errch := make(chan error)
 	defer close(errch)
@@ -4357,7 +4357,7 @@ type SetMuteRequest struct {
 	Mute bool `json:"mute"`
 }
 
-func NewSetMuteRequest(c *Client, Source string, Mute bool) (*SetMuteResponse, error) {
+func (c *Client) SetMute(Source string, Mute bool) (*SetMuteResponse, error) {
 	uuid := uuid.NewString()
 	errch := make(chan error)
 	defer close(errch)
@@ -4401,7 +4401,7 @@ type SetPreviewSceneRequest struct {
 	SceneName string `json:"scene-name"`
 }
 
-func NewSetPreviewSceneRequest(c *Client, SceneName string) (*SetPreviewSceneResponse, error) {
+func (c *Client) SetPreviewScene(SceneName string) (*SetPreviewSceneResponse, error) {
 	uuid := uuid.NewString()
 	errch := make(chan error)
 	defer close(errch)
@@ -4445,7 +4445,7 @@ type SetRecordingFolderRequest struct {
 	RecFolder string `json:"rec-folder"`
 }
 
-func NewSetRecordingFolderRequest(c *Client, RecFolder string) (*SetRecordingFolderResponse, error) {
+func (c *Client) SetRecordingFolder(RecFolder string) (*SetRecordingFolderResponse, error) {
 	uuid := uuid.NewString()
 	errch := make(chan error)
 	defer close(errch)
@@ -4500,7 +4500,7 @@ type SetSceneItemCropRequest struct {
 	Right int `json:"right"`
 }
 
-func NewSetSceneItemCropRequest(c *Client, SceneName string, Item string, Top int, Bottom int, Left int, Right int) (*SetSceneItemCropResponse, error) {
+func (c *Client) SetSceneItemCrop(SceneName string, Item string, Top int, Bottom int, Left int, Right int) (*SetSceneItemCropResponse, error) {
 	uuid := uuid.NewString()
 	errch := make(chan error)
 	defer close(errch)
@@ -4556,7 +4556,7 @@ type SetSceneItemPositionRequest struct {
 	Y float64 `json:"y"`
 }
 
-func NewSetSceneItemPositionRequest(c *Client, SceneName string, Item string, X float64, Y float64) (*SetSceneItemPositionResponse, error) {
+func (c *Client) SetSceneItemPosition(SceneName string, Item string, X float64, Y float64) (*SetSceneItemPositionResponse, error) {
 	uuid := uuid.NewString()
 	errch := make(chan error)
 	defer close(errch)
@@ -4624,7 +4624,7 @@ type SetSceneItemPropertiesRequest struct {
 	Bounds SetSceneItemPropertiesBounds `json:"bounds"`
 }
 
-func NewSetSceneItemPropertiesRequest(c *Client, SceneName string, Item SetSceneItemPropertiesItem, Position SetSceneItemPropertiesPosition, Rotation *float64, Scale SetSceneItemPropertiesScale, Crop SetSceneItemPropertiesCrop, Visible *bool, Locked *bool, Bounds SetSceneItemPropertiesBounds) (*SetSceneItemPropertiesResponse, error) {
+func (c *Client) SetSceneItemProperties(SceneName string, Item SetSceneItemPropertiesItem, Position SetSceneItemPropertiesPosition, Rotation *float64, Scale SetSceneItemPropertiesScale, Crop SetSceneItemPropertiesCrop, Visible *bool, Locked *bool, Bounds SetSceneItemPropertiesBounds) (*SetSceneItemPropertiesResponse, error) {
 	uuid := uuid.NewString()
 	errch := make(chan error)
 	defer close(errch)
@@ -4681,7 +4681,7 @@ type SetSceneItemRenderRequest struct {
 	Render bool `json:"render"`
 }
 
-func NewSetSceneItemRenderRequest(c *Client, SceneName string, Source string, Item *int, Render bool) (*SetSceneItemRenderResponse, error) {
+func (c *Client) SetSceneItemRender(SceneName string, Source string, Item *int, Render bool) (*SetSceneItemRenderResponse, error) {
 	uuid := uuid.NewString()
 	errch := make(chan error)
 	defer close(errch)
@@ -4737,7 +4737,7 @@ type SetSceneItemTransformRequest struct {
 	Rotation float64 `json:"rotation"`
 }
 
-func NewSetSceneItemTransformRequest(c *Client, SceneName string, Item string, XScale float64, YScale float64, Rotation float64) (*SetSceneItemTransformResponse, error) {
+func (c *Client) SetSceneItemTransform(SceneName string, Item string, XScale float64, YScale float64, Rotation float64) (*SetSceneItemTransformResponse, error) {
 	uuid := uuid.NewString()
 	errch := make(chan error)
 	defer close(errch)
@@ -4789,7 +4789,7 @@ type SetSceneTransitionOverrideRequest struct {
 	TransitionDuration *int `json:"transitionDuration,omitempty"`
 }
 
-func NewSetSceneTransitionOverrideRequest(c *Client, SceneName string, TransitionName string, TransitionDuration *int) (*SetSceneTransitionOverrideResponse, error) {
+func (c *Client) SetSceneTransitionOverride(SceneName string, TransitionName string, TransitionDuration *int) (*SetSceneTransitionOverrideResponse, error) {
 	uuid := uuid.NewString()
 	errch := make(chan error)
 	defer close(errch)
@@ -4837,7 +4837,7 @@ type SetSourceFilterSettingsRequest struct {
 	FilterSettings interface{} `json:"filterSettings"`
 }
 
-func NewSetSourceFilterSettingsRequest(c *Client, SourceName string, FilterName string, FilterSettings interface{}) (*SetSourceFilterSettingsResponse, error) {
+func (c *Client) SetSourceFilterSettings(SourceName string, FilterName string, FilterSettings interface{}) (*SetSourceFilterSettingsResponse, error) {
 	uuid := uuid.NewString()
 	errch := make(chan error)
 	defer close(errch)
@@ -4885,7 +4885,7 @@ type SetSourceFilterVisibilityRequest struct {
 	FilterEnabled bool `json:"filterEnabled"`
 }
 
-func NewSetSourceFilterVisibilityRequest(c *Client, SourceName string, FilterName string, FilterEnabled bool) (*SetSourceFilterVisibilityResponse, error) {
+func (c *Client) SetSourceFilterVisibility(SourceName string, FilterName string, FilterEnabled bool) (*SetSourceFilterVisibilityResponse, error) {
 	uuid := uuid.NewString()
 	errch := make(chan error)
 	defer close(errch)
@@ -4932,7 +4932,7 @@ type SetSourceNameRequest struct {
 	NewName string `json:"newName"`
 }
 
-func NewSetSourceNameRequest(c *Client, SourceName string, NewName string) (*SetSourceNameResponse, error) {
+func (c *Client) SetSourceName(SourceName string, NewName string) (*SetSourceNameResponse, error) {
 	uuid := uuid.NewString()
 	errch := make(chan error)
 	defer close(errch)
@@ -4981,7 +4981,7 @@ type SetSourceSettingsRequest struct {
 	SourceSettings interface{} `json:"sourceSettings"`
 }
 
-func NewSetSourceSettingsRequest(c *Client, SourceName string, SourceType string, SourceSettings interface{}) (*SetSourceSettingsResponse, error) {
+func (c *Client) SetSourceSettings(SourceName string, SourceType string, SourceSettings interface{}) (*SetSourceSettingsResponse, error) {
 	uuid := uuid.NewString()
 	errch := make(chan error)
 	defer close(errch)
@@ -5040,7 +5040,7 @@ type SetStreamSettingsRequest struct {
 	Save bool `json:"save"`
 }
 
-func NewSetStreamSettingsRequest(c *Client, Type string, Settings SetStreamSettingsSettings, Save bool) (*SetStreamSettingsResponse, error) {
+func (c *Client) SetStreamSettings(Type string, Settings SetStreamSettingsSettings, Save bool) (*SetStreamSettingsResponse, error) {
 	uuid := uuid.NewString()
 	errch := make(chan error)
 	defer close(errch)
@@ -5086,7 +5086,7 @@ type SetSyncOffsetRequest struct {
 	Offset int `json:"offset"`
 }
 
-func NewSetSyncOffsetRequest(c *Client, Source string, Offset int) (*SetSyncOffsetResponse, error) {
+func (c *Client) SetSyncOffset(Source string, Offset int) (*SetSyncOffsetResponse, error) {
 	uuid := uuid.NewString()
 	errch := make(chan error)
 	defer close(errch)
@@ -5136,7 +5136,7 @@ type SetTBarPositionRequest struct {
 	Release *bool `json:"release,omitempty"`
 }
 
-func NewSetTBarPositionRequest(c *Client, Position float64, Release *bool) (*SetTBarPositionResponse, error) {
+func (c *Client) SetTBarPosition(Position float64, Release *bool) (*SetTBarPositionResponse, error) {
 	uuid := uuid.NewString()
 	errch := make(chan error)
 	defer close(errch)
@@ -5202,7 +5202,7 @@ type SetTextFreetype2PropertiesRequest struct {
 	WordWrap *bool `json:"word_wrap,omitempty"`
 }
 
-func NewSetTextFreetype2PropertiesRequest(c *Client, Source string, Color1 *int, Color2 *int, CustomWidth *int, DropShadow *bool, Font SetTextFreetype2PropertiesFont, FromFile *bool, LogMode *bool, Outline *bool, Text string, TextFile string, WordWrap *bool) (*SetTextFreetype2PropertiesResponse, error) {
+func (c *Client) SetTextFreetype2Properties(Source string, Color1 *int, Color2 *int, CustomWidth *int, DropShadow *bool, Font SetTextFreetype2PropertiesFont, FromFile *bool, LogMode *bool, Outline *bool, Text string, TextFile string, WordWrap *bool) (*SetTextFreetype2PropertiesResponse, error) {
 	uuid := uuid.NewString()
 	errch := make(chan error)
 	defer close(errch)
@@ -5304,7 +5304,7 @@ type SetTextGDIPlusPropertiesRequest struct {
 	Render *bool `json:"render,omitempty"`
 }
 
-func NewSetTextGDIPlusPropertiesRequest(c *Client, Source string, Align string, BkColor *int, BkOpacity *int, Chatlog *bool, ChatlogLines *int, Color *int, Extents *bool, ExtentsCx *int, ExtentsCy *int, File string, ReadFromFile *bool, Font SetTextGDIPlusPropertiesFont, Gradient *bool, GradientColor *int, GradientDir *float32, GradientOpacity *int, Outline *bool, OutlineColor *int, OutlineSize *int, OutlineOpacity *int, Text string, Valign string, Vertical *bool, Render *bool) (*SetTextGDIPlusPropertiesResponse, error) {
+func (c *Client) SetTextGDIPlusProperties(Source string, Align string, BkColor *int, BkOpacity *int, Chatlog *bool, ChatlogLines *int, Color *int, Extents *bool, ExtentsCx *int, ExtentsCy *int, File string, ReadFromFile *bool, Font SetTextGDIPlusPropertiesFont, Gradient *bool, GradientColor *int, GradientDir *float32, GradientOpacity *int, Outline *bool, OutlineColor *int, OutlineSize *int, OutlineOpacity *int, Text string, Valign string, Vertical *bool, Render *bool) (*SetTextGDIPlusPropertiesResponse, error) {
 	uuid := uuid.NewString()
 	errch := make(chan error)
 	defer close(errch)
@@ -5370,7 +5370,7 @@ type SetTransitionDurationRequest struct {
 	Duration int `json:"duration"`
 }
 
-func NewSetTransitionDurationRequest(c *Client, Duration int) (*SetTransitionDurationResponse, error) {
+func (c *Client) SetTransitionDuration(Duration int) (*SetTransitionDurationResponse, error) {
 	uuid := uuid.NewString()
 	errch := make(chan error)
 	defer close(errch)
@@ -5414,7 +5414,7 @@ type SetTransitionSettingsRequest struct {
 	TransitionSettings interface{} `json:"transitionSettings"`
 }
 
-func NewSetTransitionSettingsRequest(c *Client, TransitionName string, TransitionSettings interface{}) (*SetTransitionSettingsResponse, error) {
+func (c *Client) SetTransitionSettings(TransitionName string, TransitionSettings interface{}) (*SetTransitionSettingsResponse, error) {
 	uuid := uuid.NewString()
 	errch := make(chan error)
 	defer close(errch)
@@ -5467,7 +5467,7 @@ type SetVolumeRequest struct {
 	UseDecibel *bool `json:"useDecibel,omitempty"`
 }
 
-func NewSetVolumeRequest(c *Client, Source string, Volume float64, UseDecibel *bool) (*SetVolumeResponse, error) {
+func (c *Client) SetVolume(Source string, Volume float64, UseDecibel *bool) (*SetVolumeResponse, error) {
 	uuid := uuid.NewString()
 	errch := make(chan error)
 	defer close(errch)
@@ -5512,7 +5512,7 @@ type SleepRequest struct {
 	SleepMillis int `json:"sleepMillis"`
 }
 
-func NewSleepRequest(c *Client, SleepMillis int) (*SleepResponse, error) {
+func (c *Client) Sleep(SleepMillis int) (*SleepResponse, error) {
 	uuid := uuid.NewString()
 	errch := make(chan error)
 	defer close(errch)
@@ -5556,7 +5556,7 @@ type StartOutputRequest struct {
 	OutputName string `json:"outputName"`
 }
 
-func NewStartOutputRequest(c *Client, OutputName string) (*StartOutputResponse, error) {
+func (c *Client) StartOutput(OutputName string) (*StartOutputResponse, error) {
 	uuid := uuid.NewString()
 	errch := make(chan error)
 	defer close(errch)
@@ -5596,7 +5596,7 @@ type StartRecordingRequest struct {
 	reqData
 }
 
-func NewStartRecordingRequest(c *Client) (*StartRecordingResponse, error) {
+func (c *Client) StartRecording() (*StartRecordingResponse, error) {
 	uuid := uuid.NewString()
 	errch := make(chan error)
 	defer close(errch)
@@ -5638,7 +5638,7 @@ type StartReplayBufferRequest struct {
 	reqData
 }
 
-func NewStartReplayBufferRequest(c *Client) (*StartReplayBufferResponse, error) {
+func (c *Client) StartReplayBuffer() (*StartReplayBufferResponse, error) {
 	uuid := uuid.NewString()
 	errch := make(chan error)
 	defer close(errch)
@@ -5677,7 +5677,7 @@ type StartStopRecordingRequest struct {
 	reqData
 }
 
-func NewStartStopRecordingRequest(c *Client) (*StartStopRecordingResponse, error) {
+func (c *Client) StartStopRecording() (*StartStopRecordingResponse, error) {
 	uuid := uuid.NewString()
 	errch := make(chan error)
 	defer close(errch)
@@ -5717,7 +5717,7 @@ type StartStopReplayBufferRequest struct {
 	reqData
 }
 
-func NewStartStopReplayBufferRequest(c *Client) (*StartStopReplayBufferResponse, error) {
+func (c *Client) StartStopReplayBuffer() (*StartStopReplayBufferResponse, error) {
 	uuid := uuid.NewString()
 	errch := make(chan error)
 	defer close(errch)
@@ -5756,7 +5756,7 @@ type StartStopStreamingRequest struct {
 	reqData
 }
 
-func NewStartStopStreamingRequest(c *Client) (*StartStopStreamingResponse, error) {
+func (c *Client) StartStopStreaming() (*StartStopStreamingResponse, error) {
 	uuid := uuid.NewString()
 	errch := make(chan error)
 	defer close(errch)
@@ -5795,7 +5795,7 @@ type StartStopVirtualCamRequest struct {
 	reqData
 }
 
-func NewStartStopVirtualCamRequest(c *Client) (*StartStopVirtualCamResponse, error) {
+func (c *Client) StartStopVirtualCam() (*StartStopVirtualCamResponse, error) {
 	uuid := uuid.NewString()
 	errch := make(chan error)
 	defer close(errch)
@@ -5837,7 +5837,7 @@ type StartStreamingRequest struct {
 	Stream StartStreamingStream `json:"stream"`
 }
 
-func NewStartStreamingRequest(c *Client, Stream StartStreamingStream) (*StartStreamingResponse, error) {
+func (c *Client) StartStreaming(Stream StartStreamingStream) (*StartStreamingResponse, error) {
 	uuid := uuid.NewString()
 	errch := make(chan error)
 	defer close(errch)
@@ -5877,7 +5877,7 @@ type StartVirtualCamRequest struct {
 	reqData
 }
 
-func NewStartVirtualCamRequest(c *Client) (*StartVirtualCamResponse, error) {
+func (c *Client) StartVirtualCam() (*StartVirtualCamResponse, error) {
 	uuid := uuid.NewString()
 	errch := make(chan error)
 	defer close(errch)
@@ -5919,7 +5919,7 @@ type StopMediaRequest struct {
 	SourceName string `json:"sourceName"`
 }
 
-func NewStopMediaRequest(c *Client, SourceName string) (*StopMediaResponse, error) {
+func (c *Client) StopMedia(SourceName string) (*StopMediaResponse, error) {
 	uuid := uuid.NewString()
 	errch := make(chan error)
 	defer close(errch)
@@ -5965,7 +5965,7 @@ type StopOutputRequest struct {
 	Force *bool `json:"force,omitempty"`
 }
 
-func NewStopOutputRequest(c *Client, OutputName string, Force *bool) (*StopOutputResponse, error) {
+func (c *Client) StopOutput(OutputName string, Force *bool) (*StopOutputResponse, error) {
 	uuid := uuid.NewString()
 	errch := make(chan error)
 	defer close(errch)
@@ -6006,7 +6006,7 @@ type StopRecordingRequest struct {
 	reqData
 }
 
-func NewStopRecordingRequest(c *Client) (*StopRecordingResponse, error) {
+func (c *Client) StopRecording() (*StopRecordingResponse, error) {
 	uuid := uuid.NewString()
 	errch := make(chan error)
 	defer close(errch)
@@ -6046,7 +6046,7 @@ type StopReplayBufferRequest struct {
 	reqData
 }
 
-func NewStopReplayBufferRequest(c *Client) (*StopReplayBufferResponse, error) {
+func (c *Client) StopReplayBuffer() (*StopReplayBufferResponse, error) {
 	uuid := uuid.NewString()
 	errch := make(chan error)
 	defer close(errch)
@@ -6085,7 +6085,7 @@ type StopStreamingRequest struct {
 	reqData
 }
 
-func NewStopStreamingRequest(c *Client) (*StopStreamingResponse, error) {
+func (c *Client) StopStreaming() (*StopStreamingResponse, error) {
 	uuid := uuid.NewString()
 	errch := make(chan error)
 	defer close(errch)
@@ -6124,7 +6124,7 @@ type StopVirtualCamRequest struct {
 	reqData
 }
 
-func NewStopVirtualCamRequest(c *Client) (*StopVirtualCamResponse, error) {
+func (c *Client) StopVirtualCam() (*StopVirtualCamResponse, error) {
 	uuid := uuid.NewString()
 	errch := make(chan error)
 	defer close(errch)
@@ -6188,7 +6188,7 @@ type TakeSourceScreenshotRequest struct {
 	Height *int `json:"height,omitempty"`
 }
 
-func NewTakeSourceScreenshotRequest(c *Client, SourceName string, EmbedPictureFormat string, SaveToFilePath string, FileFormat string, CompressionQuality *int, Width *int, Height *int) (*TakeSourceScreenshotResponse, error) {
+func (c *Client) TakeSourceScreenshot(SourceName string, EmbedPictureFormat string, SaveToFilePath string, FileFormat string, CompressionQuality *int, Width *int, Height *int) (*TakeSourceScreenshotResponse, error) {
 	uuid := uuid.NewString()
 	errch := make(chan error)
 	defer close(errch)
@@ -6243,7 +6243,7 @@ type ToggleMuteRequest struct {
 	Source string `json:"source"`
 }
 
-func NewToggleMuteRequest(c *Client, Source string) (*ToggleMuteResponse, error) {
+func (c *Client) ToggleMute(Source string) (*ToggleMuteResponse, error) {
 	uuid := uuid.NewString()
 	errch := make(chan error)
 	defer close(errch)
@@ -6283,7 +6283,7 @@ type ToggleStudioModeRequest struct {
 	reqData
 }
 
-func NewToggleStudioModeRequest(c *Client) (*ToggleStudioModeResponse, error) {
+func (c *Client) ToggleStudioMode() (*ToggleStudioModeResponse, error) {
 	uuid := uuid.NewString()
 	errch := make(chan error)
 	defer close(errch)
@@ -6326,7 +6326,7 @@ type TransitionToProgramRequest struct {
 	WithTransition TransitionToProgramWithTransition `json:"with-transition"`
 }
 
-func NewTransitionToProgramRequest(c *Client, WithTransition TransitionToProgramWithTransition) (*TransitionToProgramResponse, error) {
+func (c *Client) TransitionToProgram(WithTransition TransitionToProgramWithTransition) (*TransitionToProgramResponse, error) {
 	uuid := uuid.NewString()
 	errch := make(chan error)
 	defer close(errch)
@@ -6369,7 +6369,7 @@ type TriggerHotkeyByNameRequest struct {
 	HotkeyName string `json:"hotkeyName"`
 }
 
-func NewTriggerHotkeyByNameRequest(c *Client, HotkeyName string) (*TriggerHotkeyByNameResponse, error) {
+func (c *Client) TriggerHotkeyByName(HotkeyName string) (*TriggerHotkeyByNameResponse, error) {
 	uuid := uuid.NewString()
 	errch := make(chan error)
 	defer close(errch)
@@ -6416,7 +6416,7 @@ type TriggerHotkeyBySequenceRequest struct {
 	KeyModifiers TriggerHotkeyBySequenceKeyModifiers `json:"keyModifiers"`
 }
 
-func NewTriggerHotkeyBySequenceRequest(c *Client, KeyId string, KeyModifiers TriggerHotkeyBySequenceKeyModifiers) (*TriggerHotkeyBySequenceResponse, error) {
+func (c *Client) TriggerHotkeyBySequence(KeyId string, KeyModifiers TriggerHotkeyBySequenceKeyModifiers) (*TriggerHotkeyBySequenceResponse, error) {
 	uuid := uuid.NewString()
 	errch := make(chan error)
 	defer close(errch)

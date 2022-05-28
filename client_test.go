@@ -16,7 +16,7 @@ func connect(t *testing.T) *obs.Client {
 		return &c
 	}
 	if needsAuth {
-		err = c.Authenticate("password")
+		err = c.Login("password")
 		if err != nil {
 			t.Error(err)
 		}

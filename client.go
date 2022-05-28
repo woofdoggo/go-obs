@@ -23,7 +23,7 @@ type Client struct {
 }
 
 // Function Authenticate will authenticate with OBS using the provided password.
-func (c *Client) Authenticate(password string) error {
+func (c *Client) Login(password string) error {
 	if !c.connected {
 		return errors.New("client not connected")
 	}
@@ -36,7 +36,7 @@ func (c *Client) Authenticate(password string) error {
 	sec := secret + c.auth.Challenge
 	sechash := sha256.Sum256([]byte(sec))
 	secRes := base64.StdEncoding.EncodeToString(sechash[:])
-	_, err := NewAuthenticateRequest(c, secRes)
+	_, err := c.Authenticate(secRes)
 	if err != nil {
 		return err
 	}
@@ -57,7 +57,7 @@ func (c *Client) Connect(address string) (bool, chan error, error) {
 	errch := c.poll()
 	c.conn = conn
 	c.connected = true
-	res, err := NewGetAuthRequiredRequest(c)
+	res, err := c.GetAuthRequired()
 	if err != nil {
 		conn.Close()
 		return false, errch, err
