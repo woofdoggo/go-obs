@@ -20,6 +20,7 @@ type Client struct {
 	recvMap       map[string]chan []byte
 	eventHandlers map[string]func(any)
 	mx            sync.Mutex
+	stop          chan struct{}
 }
 
 // Function Authenticate will authenticate with OBS using the provided password.
@@ -49,6 +50,7 @@ func (c *Client) Connect(address string) (bool, chan error, error) {
 	c.url = address
 	c.errMap = make(map[string]chan error)
 	c.recvMap = make(map[string]chan []byte)
+	c.stop = make(chan struct{})
 
 	conn, _, err := websocket.DefaultDialer.Dial("ws://"+c.url, nil)
 	if err != nil {
@@ -66,6 +68,15 @@ func (c *Client) Connect(address string) (bool, chan error, error) {
 		c.auth = res
 	}
 	return res.AuthRequired, errch, nil
+}
+
+// Function Close closes the Client's connection.
+func (c *Client) Close() error {
+	if !c.connected {
+		return errors.New("not connected")
+	}
+	c.stop <- struct{}{}
+	return nil
 }
 
 // Function GetHandler returns the handler for the given event type, if
@@ -140,6 +151,13 @@ func (c *Client) poll() chan error {
 						}
 					}
 				}
+			}
+
+			select {
+			case <-c.stop:
+				return
+			default:
+				continue
 			}
 		}
 	}()

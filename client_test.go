@@ -27,3 +27,8 @@ func connect(t *testing.T) *obs.Client {
 func TestConnect(t *testing.T) {
 	connect(t)
 }
+
+func TestStop(t *testing.T) {
+	o := connect(t)
+	o.Close()
+}
