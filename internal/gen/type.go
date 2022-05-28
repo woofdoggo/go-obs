@@ -45,13 +45,7 @@ type StructType struct {
 }
 
 func (t StructType) String() string {
-	var out string
-	if t.array {
-		out = "[]struct {\n"
-	} else {
-		out = "struct {\n"
-	}
-
+	out := "struct {\n"
 	for _, p := range t.children {
 		out += fmt.Sprintf(
 			"%s%s %s `json:\"%s\"`\n",

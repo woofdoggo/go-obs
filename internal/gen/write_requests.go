@@ -15,6 +15,8 @@ func writeRequests(reqs []Request) {
     )
     `)
 
+	typebuf := bytes.Buffer{}
+
 	for _, r := range reqs {
 		// Write request type.
 		buf.WriteString(wrapComment(r.Docs))
@@ -25,11 +27,23 @@ func writeRequests(reqs []Request) {
 		buf.WriteString(fmt.Sprintf("type %sRequest struct {\n", r.Name))
 		buf.WriteString("reqData\n")
 		for _, p := range r.Parameters {
+			var typeStr string
+			if _, ok := p.Type.(StructType); ok {
+				typeStr = r.Name + p.Name
+				if p.Type.Array() {
+					typeStr = "[]" + typeStr
+				}
+				typebuf.WriteString(fmt.Sprintf("type %s%s ", r.Name, p.Name))
+				typebuf.WriteString(p.Type.String())
+				typebuf.WriteString("\n\n")
+			} else {
+				typeStr = p.Type.String()
+			}
 			str := fmt.Sprintf(
 				"%s%s %s `json:\"%s\"`\n",
 				wrapComment(p.Docs),
 				p.Name,
-				p.Type.String(),
+				typeStr,
 				p.JsonTag,
 			)
 			buf.WriteString(str)
@@ -39,7 +53,16 @@ func writeRequests(reqs []Request) {
 		// Write new request function.
 		buf.WriteString(fmt.Sprintf("func New%sRequest(c *Client, ", r.Name))
 		for _, p := range r.Parameters {
-			buf.WriteString(fmt.Sprintf("%s %s,", p.Name, p.Type.String()))
+			var typeStr string
+			if _, ok := p.Type.(StructType); ok {
+				typeStr = r.Name + p.Name
+				if p.Type.Array() {
+					typeStr = "[]" + typeStr
+				}
+			} else {
+				typeStr = p.Type.String()
+			}
+			buf.WriteString(fmt.Sprintf("%s %s,", p.Name, typeStr))
 		}
 		buf.WriteString(fmt.Sprintf(") (*%sResponse, error) {", r.Name))
 		buf.WriteString(fmt.Sprintf(`
@@ -92,5 +115,6 @@ func writeRequests(reqs []Request) {
 		}
 		buf.WriteString("}\n\n")
 	}
+	buf.Write(typebuf.Bytes())
 	fmtWrite("./gen_requests.go", buf)
 }

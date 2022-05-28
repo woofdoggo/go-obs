@@ -17,11 +17,20 @@ func writeEvents(events []Event) {
 		buf.WriteString(fmt.Sprintf("type %sEvent struct {\n", e.Name))
 		buf.WriteString("eventData\n")
 		for _, p := range e.Returns {
+			var typeStr string
+			if _, ok := p.Type.(StructType); ok {
+				typeStr = p.Type.String()
+				if p.Type.Array() {
+					typeStr = "[]" + typeStr
+				}
+			} else {
+				typeStr = p.Type.String()
+			}
 			str := fmt.Sprintf(
 				"%s%s %s `json:\"%s\"`\n",
 				wrapComment(p.Docs),
 				p.Name,
-				p.Type.String(),
+				typeStr,
 				p.JsonTag,
 			)
 			buf.WriteString(str)
