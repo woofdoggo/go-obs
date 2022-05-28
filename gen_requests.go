@@ -300,20 +300,10 @@ type DeleteSceneItemRequest struct {
 	// Name of the scene the scene item belongs to. Defaults to the current scene.
 	Scene string `json:"scene,omitempty"`
 	// Scene item to delete (required)
-	Item struct {
-		// Scene Item name (prefer `id`, including both is acceptable).
-		Name string `json:"name"`
-		// Scene Item ID.
-		Id int `json:"id"`
-	} `json:"item"`
+	Item DeleteSceneItemItem `json:"item"`
 }
 
-func NewDeleteSceneItemRequest(c *Client, Scene string, Item struct {
-	// Scene Item name (prefer `id`, including both is acceptable).
-	Name string `json:"name"`
-	// Scene Item ID.
-	Id int `json:"id"`
-}) (*DeleteSceneItemResponse, error) {
+func NewDeleteSceneItemRequest(c *Client, Scene string, Item DeleteSceneItemItem) (*DeleteSceneItemResponse, error) {
 	uuid := uuid.NewString()
 	errch := make(chan error)
 	defer close(errch)
@@ -396,20 +386,10 @@ type DuplicateSceneItemRequest struct {
 	// Name of the scene to create the item in. Defaults to the current scene.
 	ToScene string `json:"toScene,omitempty"`
 	// Scene Item to duplicate from the source scene (required)
-	Item struct {
-		// Scene Item name (prefer `id`, including both is acceptable).
-		Name string `json:"name"`
-		// Scene Item ID.
-		Id int `json:"id"`
-	} `json:"item"`
+	Item DuplicateSceneItemItem `json:"item"`
 }
 
-func NewDuplicateSceneItemRequest(c *Client, FromScene string, ToScene string, Item struct {
-	// Scene Item name (prefer `id`, including both is acceptable).
-	Name string `json:"name"`
-	// Scene Item ID.
-	Id int `json:"id"`
-}) (*DuplicateSceneItemResponse, error) {
+func NewDuplicateSceneItemRequest(c *Client, FromScene string, ToScene string, Item DuplicateSceneItemItem) (*DuplicateSceneItemResponse, error) {
 	uuid := uuid.NewString()
 	errch := make(chan error)
 	defer close(errch)
@@ -498,24 +478,12 @@ type EnableStudioModeResponse struct {
 type ExecuteBatchRequest struct {
 	reqData
 	// Array of requests to perform. Executed in order.
-	Requests []struct {
-		// Request type. Eg. `GetVersion`.
-		RequestType string `json:"request-type"`
-		// ID of the individual request. Can be any string and not required to be
-		// unique. Defaults to empty string if not specified.
-		MessageId string `json:"message-id,omitempty"`
-	} `json:"requests"`
+	Requests []ExecuteBatchRequests `json:"requests"`
 	// Stop processing batch requests if one returns a failure.
 	AbortOnFail *bool `json:"abortOnFail,omitempty"`
 }
 
-func NewExecuteBatchRequest(c *Client, Requests []struct {
-	// Request type. Eg. `GetVersion`.
-	RequestType string `json:"request-type"`
-	// ID of the individual request. Can be any string and not required to be
-	// unique. Defaults to empty string if not specified.
-	MessageId string `json:"message-id,omitempty"`
-}, AbortOnFail *bool) (*ExecuteBatchResponse, error) {
+func NewExecuteBatchRequest(c *Client, Requests []ExecuteBatchRequests, AbortOnFail *bool) (*ExecuteBatchResponse, error) {
 	uuid := uuid.NewString()
 	errch := make(chan error)
 	defer close(errch)
@@ -550,7 +518,7 @@ func NewExecuteBatchRequest(c *Client, Requests []struct {
 type ExecuteBatchResponse struct {
 	resData
 	// Batch requests results, ordered sequentially.
-	Results []struct {
+	Results struct {
 		// ID of the individual request which was originally provided by the client.
 		MessageId string `json:"message-id"`
 		// Status response as string. Either `ok` or `error`.
@@ -1099,7 +1067,7 @@ func NewGetMediaSourcesListRequest(c *Client) (*GetMediaSourcesListResponse, err
 type GetMediaSourcesListResponse struct {
 	resData
 	// Array of sources
-	MediaSources []struct {
+	MediaSources struct {
 		// Unique source name
 		SourceName string `json:"sourceName"`
 		// Unique source internal type (a.k.a `ffmpeg_source` or `vlc_source`)
@@ -1507,7 +1475,7 @@ type GetSceneItemListResponse struct {
 	// Name of the requested (or current) scene
 	SceneName string `json:"sceneName"`
 	// Array of scene items
-	SceneItems []struct {
+	SceneItems struct {
 		// Unique item id of the source item
 		ItemId int `json:"itemId"`
 		// ID if the scene item's source. For example `vlc_source` or `image_source`
@@ -1527,20 +1495,10 @@ type GetSceneItemPropertiesRequest struct {
 	SceneName string `json:"scene-name,omitempty"`
 	// Scene Item name (if this field is a string) or specification (if it is an
 	// object).
-	Item struct {
-		// Scene Item name (if the `item` field is an object)
-		Name string `json:"name,omitempty"`
-		// Scene Item ID (if the `item` field is an object)
-		Id *int `json:"id,omitempty"`
-	} `json:"item"`
+	Item GetSceneItemPropertiesItem `json:"item"`
 }
 
-func NewGetSceneItemPropertiesRequest(c *Client, SceneName string, Item struct {
-	// Scene Item name (if the `item` field is an object)
-	Name string `json:"name,omitempty"`
-	// Scene Item ID (if the `item` field is an object)
-	Id *int `json:"id,omitempty"`
-}) (*GetSceneItemPropertiesResponse, error) {
+func NewGetSceneItemPropertiesRequest(c *Client, SceneName string, Item GetSceneItemPropertiesItem) (*GetSceneItemPropertiesResponse, error) {
 	uuid := uuid.NewString()
 	errch := make(chan error)
 	defer close(errch)
@@ -1925,7 +1883,7 @@ func NewGetSourceFiltersRequest(c *Client, SourceName string) (*GetSourceFilters
 type GetSourceFiltersResponse struct {
 	resData
 	// List of filters for the specified source
-	Filters []struct {
+	Filters struct {
 		// Filter status (enabled or not)
 		Enabled bool `json:"enabled"`
 		// Filter type
@@ -2028,7 +1986,7 @@ func NewGetSourceTypesListRequest(c *Client) (*GetSourceTypesListResponse, error
 type GetSourceTypesListResponse struct {
 	resData
 	// Array of source types
-	Types []struct {
+	Types struct {
 		// Non-unique internal source type ID
 		TypeId string `json:"typeId"`
 		// Display name of the source type
@@ -2097,7 +2055,7 @@ func NewGetSourcesListRequest(c *Client) (*GetSourcesListResponse, error) {
 type GetSourcesListResponse struct {
 	resData
 	// Array of sources
-	Sources []struct {
+	Sources struct {
 		// Unique source name
 		Name string `json:"name"`
 		// Non-unique source internal type (a.k.a kind)
@@ -2658,7 +2616,7 @@ type GetTransitionListResponse struct {
 	// Name of the currently active transition.
 	CurrentTransition string `json:"current-transition"`
 	// List of transitions.
-	Transitions []struct {
+	Transitions struct {
 		// Name of the transition.
 		Name string `json:"name"`
 	} `json:"transitions"`
@@ -3034,7 +2992,7 @@ func NewListProfilesRequest(c *Client) (*ListProfilesResponse, error) {
 type ListProfilesResponse struct {
 	resData
 	// List of available profiles.
-	Profiles []struct {
+	Profiles struct {
 		// Filter name
 		ProfileName string `json:"profile-name"`
 	} `json:"profiles"`
@@ -3537,22 +3495,10 @@ type ReorderSceneItemsRequest struct {
 	Scene string `json:"scene,omitempty"`
 	// Ordered list of objects with name and/or id specified. Id preferred due to
 	// uniqueness per scene
-	Items []struct {
-		// Id of a specific scene item. Unique on a scene by scene basis.
-		Id *int `json:"id,omitempty"`
-		// Name of a scene item. Sufficiently unique if no scene items share sources
-		// within the scene.
-		Name string `json:"name,omitempty"`
-	} `json:"items"`
+	Items []ReorderSceneItemsItems `json:"items"`
 }
 
-func NewReorderSceneItemsRequest(c *Client, Scene string, Items []struct {
-	// Id of a specific scene item. Unique on a scene by scene basis.
-	Id *int `json:"id,omitempty"`
-	// Name of a scene item. Sufficiently unique if no scene items share sources
-	// within the scene.
-	Name string `json:"name,omitempty"`
-}) (*ReorderSceneItemsResponse, error) {
+func NewReorderSceneItemsRequest(c *Client, Scene string, Items []ReorderSceneItemsItems) (*ReorderSceneItemsResponse, error) {
 	uuid := uuid.NewString()
 	errch := make(chan error)
 	defer close(errch)
@@ -3643,20 +3589,10 @@ type ResetSceneItemRequest struct {
 	SceneName string `json:"scene-name,omitempty"`
 	// Scene Item name (if this field is a string) or specification (if it is an
 	// object).
-	Item struct {
-		// Scene Item name (if the `item` field is an object)
-		Name string `json:"name,omitempty"`
-		// Scene Item ID (if the `item` field is an object)
-		Id *int `json:"id,omitempty"`
-	} `json:"item"`
+	Item ResetSceneItemItem `json:"item"`
 }
 
-func NewResetSceneItemRequest(c *Client, SceneName string, Item struct {
-	// Scene Item name (if the `item` field is an object)
-	Name string `json:"name,omitempty"`
-	// Scene Item ID (if the `item` field is an object)
-	Id *int `json:"id,omitempty"`
-}) (*ResetSceneItemResponse, error) {
+func NewResetSceneItemRequest(c *Client, SceneName string, Item ResetSceneItemItem) (*ResetSceneItemResponse, error) {
 	uuid := uuid.NewString()
 	errch := make(chan error)
 	defer close(errch)
@@ -4667,45 +4603,15 @@ type SetSceneItemPropertiesRequest struct {
 	SceneName string `json:"scene-name,omitempty"`
 	// Scene Item name (if this field is a string) or specification (if it is an
 	// object).
-	Item struct {
-		// Scene Item name (if the `item` field is an object)
-		Name string `json:"name,omitempty"`
-		// Scene Item ID (if the `item` field is an object)
-		Id *int `json:"id,omitempty"`
-	} `json:"item"`
+	Item SetSceneItemPropertiesItem `json:"item"`
 	// The new x position of the source.
-	Position struct {
-		// The new x position of the source.
-		X *float64 `json:"x,omitempty"`
-		// The new y position of the source.
-		Y *float64 `json:"y,omitempty"`
-		// The new alignment of the source.
-		Alignment *int `json:"alignment,omitempty"`
-	} `json:"position"`
+	Position SetSceneItemPropertiesPosition `json:"position"`
 	// The new clockwise rotation of the item in degrees.
 	Rotation *float64 `json:"rotation,omitempty"`
 	// The new x scale of the item.
-	Scale struct {
-		// The new x scale of the item.
-		X *float64 `json:"x,omitempty"`
-		// The new y scale of the item.
-		Y *float64 `json:"y,omitempty"`
-		// The new scale filter of the source. Can be "OBS_SCALE_DISABLE",
-		// "OBS_SCALE_POINT", "OBS_SCALE_BICUBIC", "OBS_SCALE_BILINEAR",
-		// "OBS_SCALE_LANCZOS" or "OBS_SCALE_AREA".
-		Filter string `json:"filter,omitempty"`
-	} `json:"scale"`
+	Scale SetSceneItemPropertiesScale `json:"scale"`
 	// The new amount of pixels cropped off the top of the source before scaling.
-	Crop struct {
-		// The new amount of pixels cropped off the top of the source before scaling.
-		Top *int `json:"top,omitempty"`
-		// The new amount of pixels cropped off the bottom of the source before scaling.
-		Bottom *int `json:"bottom,omitempty"`
-		// The new amount of pixels cropped off the left of the source before scaling.
-		Left *int `json:"left,omitempty"`
-		// The new amount of pixels cropped off the right of the source before scaling.
-		Right *int `json:"right,omitempty"`
-	} `json:"crop"`
+	Crop SetSceneItemPropertiesCrop `json:"crop"`
 	// The new visibility of the source. 'true' shows source, 'false' hides source.
 	Visible *bool `json:"visible,omitempty"`
 	// The new locked status of the source. 'true' keeps it in its current position,
@@ -4715,64 +4621,10 @@ type SetSceneItemPropertiesRequest struct {
 	// "OBS_BOUNDS_SCALE_INNER", "OBS_BOUNDS_SCALE_OUTER",
 	// "OBS_BOUNDS_SCALE_TO_WIDTH", "OBS_BOUNDS_SCALE_TO_HEIGHT",
 	// "OBS_BOUNDS_MAX_ONLY" or "OBS_BOUNDS_NONE".
-	Bounds struct {
-		// The new bounds type of the source. Can be "OBS_BOUNDS_STRETCH",
-		// "OBS_BOUNDS_SCALE_INNER", "OBS_BOUNDS_SCALE_OUTER",
-		// "OBS_BOUNDS_SCALE_TO_WIDTH", "OBS_BOUNDS_SCALE_TO_HEIGHT",
-		// "OBS_BOUNDS_MAX_ONLY" or "OBS_BOUNDS_NONE".
-		Type string `json:"type,omitempty"`
-		// The new alignment of the bounding box. (0-2, 4-6, 8-10)
-		Alignment *int `json:"alignment,omitempty"`
-		// The new width of the bounding box.
-		X *float64 `json:"x,omitempty"`
-		// The new height of the bounding box.
-		Y *float64 `json:"y,omitempty"`
-	} `json:"bounds"`
+	Bounds SetSceneItemPropertiesBounds `json:"bounds"`
 }
 
-func NewSetSceneItemPropertiesRequest(c *Client, SceneName string, Item struct {
-	// Scene Item name (if the `item` field is an object)
-	Name string `json:"name,omitempty"`
-	// Scene Item ID (if the `item` field is an object)
-	Id *int `json:"id,omitempty"`
-}, Position struct {
-	// The new x position of the source.
-	X *float64 `json:"x,omitempty"`
-	// The new y position of the source.
-	Y *float64 `json:"y,omitempty"`
-	// The new alignment of the source.
-	Alignment *int `json:"alignment,omitempty"`
-}, Rotation *float64, Scale struct {
-	// The new x scale of the item.
-	X *float64 `json:"x,omitempty"`
-	// The new y scale of the item.
-	Y *float64 `json:"y,omitempty"`
-	// The new scale filter of the source. Can be "OBS_SCALE_DISABLE",
-	// "OBS_SCALE_POINT", "OBS_SCALE_BICUBIC", "OBS_SCALE_BILINEAR",
-	// "OBS_SCALE_LANCZOS" or "OBS_SCALE_AREA".
-	Filter string `json:"filter,omitempty"`
-}, Crop struct {
-	// The new amount of pixels cropped off the top of the source before scaling.
-	Top *int `json:"top,omitempty"`
-	// The new amount of pixels cropped off the bottom of the source before scaling.
-	Bottom *int `json:"bottom,omitempty"`
-	// The new amount of pixels cropped off the left of the source before scaling.
-	Left *int `json:"left,omitempty"`
-	// The new amount of pixels cropped off the right of the source before scaling.
-	Right *int `json:"right,omitempty"`
-}, Visible *bool, Locked *bool, Bounds struct {
-	// The new bounds type of the source. Can be "OBS_BOUNDS_STRETCH",
-	// "OBS_BOUNDS_SCALE_INNER", "OBS_BOUNDS_SCALE_OUTER",
-	// "OBS_BOUNDS_SCALE_TO_WIDTH", "OBS_BOUNDS_SCALE_TO_HEIGHT",
-	// "OBS_BOUNDS_MAX_ONLY" or "OBS_BOUNDS_NONE".
-	Type string `json:"type,omitempty"`
-	// The new alignment of the bounding box. (0-2, 4-6, 8-10)
-	Alignment *int `json:"alignment,omitempty"`
-	// The new width of the bounding box.
-	X *float64 `json:"x,omitempty"`
-	// The new height of the bounding box.
-	Y *float64 `json:"y,omitempty"`
-}) (*SetSceneItemPropertiesResponse, error) {
+func NewSetSceneItemPropertiesRequest(c *Client, SceneName string, Item SetSceneItemPropertiesItem, Position SetSceneItemPropertiesPosition, Rotation *float64, Scale SetSceneItemPropertiesScale, Crop SetSceneItemPropertiesCrop, Visible *bool, Locked *bool, Bounds SetSceneItemPropertiesBounds) (*SetSceneItemPropertiesResponse, error) {
 	uuid := uuid.NewString()
 	errch := make(chan error)
 	defer close(errch)
@@ -5183,36 +5035,12 @@ type SetStreamSettingsRequest struct {
 	// `rtmp_common`.
 	Type string `json:"type"`
 	// The actual settings of the stream.
-	Settings struct {
-		// The publish URL.
-		Server string `json:"server,omitempty"`
-		// The publish key.
-		Key string `json:"key,omitempty"`
-		// Indicates whether authentication should be used when connecting to the
-		// streaming server.
-		UseAuth *bool `json:"use_auth,omitempty"`
-		// The username for the streaming service.
-		Username string `json:"username,omitempty"`
-		// The password for the streaming service.
-		Password string `json:"password,omitempty"`
-	} `json:"settings"`
+	Settings SetStreamSettingsSettings `json:"settings"`
 	// Persist the settings to disk.
 	Save bool `json:"save"`
 }
 
-func NewSetStreamSettingsRequest(c *Client, Type string, Settings struct {
-	// The publish URL.
-	Server string `json:"server,omitempty"`
-	// The publish key.
-	Key string `json:"key,omitempty"`
-	// Indicates whether authentication should be used when connecting to the
-	// streaming server.
-	UseAuth *bool `json:"use_auth,omitempty"`
-	// The username for the streaming service.
-	Username string `json:"username,omitempty"`
-	// The password for the streaming service.
-	Password string `json:"password,omitempty"`
-}, Save bool) (*SetStreamSettingsResponse, error) {
+func NewSetStreamSettingsRequest(c *Client, Type string, Settings SetStreamSettingsSettings, Save bool) (*SetStreamSettingsResponse, error) {
 	uuid := uuid.NewString()
 	errch := make(chan error)
 	defer close(errch)
@@ -5359,17 +5187,7 @@ type SetTextFreetype2PropertiesRequest struct {
 	DropShadow *bool `json:"drop_shadow,omitempty"`
 	// Holds data for the font. Ex: `"font": { "face": "Arial", "flags": 0, "size":
 	// 150, "style": "" }`
-	Font struct {
-		// Font face.
-		Face string `json:"face,omitempty"`
-		// Font text styling flag. `Bold=1, Italic=2, Bold Italic=3, Underline=5,
-		// Strikeout=8`
-		Flags *int `json:"flags,omitempty"`
-		// Font text size.
-		Size *int `json:"size,omitempty"`
-		// Font Style (unknown function).
-		Style string `json:"style,omitempty"`
-	} `json:"font"`
+	Font SetTextFreetype2PropertiesFont `json:"font"`
 	// Read text from the specified file.
 	FromFile *bool `json:"from_file,omitempty"`
 	// Chat log.
@@ -5384,17 +5202,7 @@ type SetTextFreetype2PropertiesRequest struct {
 	WordWrap *bool `json:"word_wrap,omitempty"`
 }
 
-func NewSetTextFreetype2PropertiesRequest(c *Client, Source string, Color1 *int, Color2 *int, CustomWidth *int, DropShadow *bool, Font struct {
-	// Font face.
-	Face string `json:"face,omitempty"`
-	// Font text styling flag. `Bold=1, Italic=2, Bold Italic=3, Underline=5,
-	// Strikeout=8`
-	Flags *int `json:"flags,omitempty"`
-	// Font text size.
-	Size *int `json:"size,omitempty"`
-	// Font Style (unknown function).
-	Style string `json:"style,omitempty"`
-}, FromFile *bool, LogMode *bool, Outline *bool, Text string, TextFile string, WordWrap *bool) (*SetTextFreetype2PropertiesResponse, error) {
+func NewSetTextFreetype2PropertiesRequest(c *Client, Source string, Color1 *int, Color2 *int, CustomWidth *int, DropShadow *bool, Font SetTextFreetype2PropertiesFont, FromFile *bool, LogMode *bool, Outline *bool, Text string, TextFile string, WordWrap *bool) (*SetTextFreetype2PropertiesResponse, error) {
 	uuid := uuid.NewString()
 	errch := make(chan error)
 	defer close(errch)
@@ -5469,17 +5277,7 @@ type SetTextGDIPlusPropertiesRequest struct {
 	ReadFromFile *bool `json:"read_from_file,omitempty"`
 	// Holds data for the font. Ex: `"font": { "face": "Arial", "flags": 0, "size":
 	// 150, "style": "" }`
-	Font struct {
-		// Font face.
-		Face string `json:"face,omitempty"`
-		// Font text styling flag. `Bold=1, Italic=2, Bold Italic=3, Underline=5,
-		// Strikeout=8`
-		Flags *int `json:"flags,omitempty"`
-		// Font text size.
-		Size *int `json:"size,omitempty"`
-		// Font Style (unknown function).
-		Style string `json:"style,omitempty"`
-	} `json:"font"`
+	Font SetTextGDIPlusPropertiesFont `json:"font"`
 	// Gradient enabled.
 	Gradient *bool `json:"gradient,omitempty"`
 	// Gradient color.
@@ -5506,17 +5304,7 @@ type SetTextGDIPlusPropertiesRequest struct {
 	Render *bool `json:"render,omitempty"`
 }
 
-func NewSetTextGDIPlusPropertiesRequest(c *Client, Source string, Align string, BkColor *int, BkOpacity *int, Chatlog *bool, ChatlogLines *int, Color *int, Extents *bool, ExtentsCx *int, ExtentsCy *int, File string, ReadFromFile *bool, Font struct {
-	// Font face.
-	Face string `json:"face,omitempty"`
-	// Font text styling flag. `Bold=1, Italic=2, Bold Italic=3, Underline=5,
-	// Strikeout=8`
-	Flags *int `json:"flags,omitempty"`
-	// Font text size.
-	Size *int `json:"size,omitempty"`
-	// Font Style (unknown function).
-	Style string `json:"style,omitempty"`
-}, Gradient *bool, GradientColor *int, GradientDir *float32, GradientOpacity *int, Outline *bool, OutlineColor *int, OutlineSize *int, OutlineOpacity *int, Text string, Valign string, Vertical *bool, Render *bool) (*SetTextGDIPlusPropertiesResponse, error) {
+func NewSetTextGDIPlusPropertiesRequest(c *Client, Source string, Align string, BkColor *int, BkOpacity *int, Chatlog *bool, ChatlogLines *int, Color *int, Extents *bool, ExtentsCx *int, ExtentsCy *int, File string, ReadFromFile *bool, Font SetTextGDIPlusPropertiesFont, Gradient *bool, GradientColor *int, GradientDir *float32, GradientOpacity *int, Outline *bool, OutlineColor *int, OutlineSize *int, OutlineOpacity *int, Text string, Valign string, Vertical *bool, Render *bool) (*SetTextGDIPlusPropertiesResponse, error) {
 	uuid := uuid.NewString()
 	errch := make(chan error)
 	defer close(errch)
@@ -6046,60 +5834,10 @@ type StartStreamingRequest struct {
 	reqData
 	// Special stream configuration. Note: these won't be saved to OBS'
 	// configuration.
-	Stream struct {
-		// If specified ensures the type of stream matches the given type (usually
-		// 'rtmp_custom' or 'rtmp_common'). If the currently configured stream type does
-		// not match the given stream type, all settings must be specified in the
-		// `settings` object or an error will occur when starting the stream.
-		Type string `json:"type,omitempty"`
-		// Adds the given object parameters as encoded query string parameters to the
-		// 'key' of the RTMP stream. Used to pass data to the RTMP service about the
-		// streaming. May be any String, Numeric, or Boolean field.
-		Metadata interface{} `json:"metadata,omitempty"`
-		// Settings for the stream.
-		Settings interface{} `json:"settings,omitempty"`
-		// The publish URL.
-		Server string `json:"server,omitempty"`
-		// The publish key of the stream.
-		Key string `json:"key,omitempty"`
-		// Indicates whether authentication should be used when connecting to the
-		// streaming server.
-		UseAuth *bool `json:"use_auth,omitempty"`
-		// If authentication is enabled, the username for the streaming server. Ignored
-		// if `use_auth` is not set to `true`.
-		Username string `json:"username,omitempty"`
-		// If authentication is enabled, the password for the streaming server. Ignored
-		// if `use_auth` is not set to `true`.
-		Password string `json:"password,omitempty"`
-	} `json:"stream"`
+	Stream StartStreamingStream `json:"stream"`
 }
 
-func NewStartStreamingRequest(c *Client, Stream struct {
-	// If specified ensures the type of stream matches the given type (usually
-	// 'rtmp_custom' or 'rtmp_common'). If the currently configured stream type does
-	// not match the given stream type, all settings must be specified in the
-	// `settings` object or an error will occur when starting the stream.
-	Type string `json:"type,omitempty"`
-	// Adds the given object parameters as encoded query string parameters to the
-	// 'key' of the RTMP stream. Used to pass data to the RTMP service about the
-	// streaming. May be any String, Numeric, or Boolean field.
-	Metadata interface{} `json:"metadata,omitempty"`
-	// Settings for the stream.
-	Settings interface{} `json:"settings,omitempty"`
-	// The publish URL.
-	Server string `json:"server,omitempty"`
-	// The publish key of the stream.
-	Key string `json:"key,omitempty"`
-	// Indicates whether authentication should be used when connecting to the
-	// streaming server.
-	UseAuth *bool `json:"use_auth,omitempty"`
-	// If authentication is enabled, the username for the streaming server. Ignored
-	// if `use_auth` is not set to `true`.
-	Username string `json:"username,omitempty"`
-	// If authentication is enabled, the password for the streaming server. Ignored
-	// if `use_auth` is not set to `true`.
-	Password string `json:"password,omitempty"`
-}) (*StartStreamingResponse, error) {
+func NewStartStreamingRequest(c *Client, Stream StartStreamingStream) (*StartStreamingResponse, error) {
 	uuid := uuid.NewString()
 	errch := make(chan error)
 	defer close(errch)
@@ -6585,20 +6323,10 @@ type TransitionToProgramRequest struct {
 	reqData
 	// Change the active transition before switching scenes. Defaults to the active
 	// transition.
-	WithTransition struct {
-		// Name of the transition.
-		Name string `json:"name"`
-		// Transition duration (in milliseconds).
-		Duration *int `json:"duration,omitempty"`
-	} `json:"with-transition"`
+	WithTransition TransitionToProgramWithTransition `json:"with-transition"`
 }
 
-func NewTransitionToProgramRequest(c *Client, WithTransition struct {
-	// Name of the transition.
-	Name string `json:"name"`
-	// Transition duration (in milliseconds).
-	Duration *int `json:"duration,omitempty"`
-}) (*TransitionToProgramResponse, error) {
+func NewTransitionToProgramRequest(c *Client, WithTransition TransitionToProgramWithTransition) (*TransitionToProgramResponse, error) {
 	uuid := uuid.NewString()
 	errch := make(chan error)
 	defer close(errch)
@@ -6685,28 +6413,10 @@ type TriggerHotkeyBySequenceRequest struct {
 	// [here](https://github.com/obsproject/obs-studio/blob/master/libobs/obs-hotkeys.h)
 	KeyId string `json:"keyId"`
 	// Optional key modifiers object. False entries can be ommitted
-	KeyModifiers struct {
-		// Trigger Shift Key
-		Shift bool `json:"shift"`
-		// Trigger Alt Key
-		Alt bool `json:"alt"`
-		// Trigger Control (Ctrl) Key
-		Control bool `json:"control"`
-		// Trigger Command Key (Mac)
-		Command bool `json:"command"`
-	} `json:"keyModifiers"`
+	KeyModifiers TriggerHotkeyBySequenceKeyModifiers `json:"keyModifiers"`
 }
 
-func NewTriggerHotkeyBySequenceRequest(c *Client, KeyId string, KeyModifiers struct {
-	// Trigger Shift Key
-	Shift bool `json:"shift"`
-	// Trigger Alt Key
-	Alt bool `json:"alt"`
-	// Trigger Control (Ctrl) Key
-	Control bool `json:"control"`
-	// Trigger Command Key (Mac)
-	Command bool `json:"command"`
-}) (*TriggerHotkeyBySequenceResponse, error) {
+func NewTriggerHotkeyBySequenceRequest(c *Client, KeyId string, KeyModifiers TriggerHotkeyBySequenceKeyModifiers) (*TriggerHotkeyBySequenceResponse, error) {
 	uuid := uuid.NewString()
 	errch := make(chan error)
 	defer close(errch)
@@ -6740,4 +6450,183 @@ func NewTriggerHotkeyBySequenceRequest(c *Client, KeyId string, KeyModifiers str
 
 type TriggerHotkeyBySequenceResponse struct {
 	resData
+}
+
+type DeleteSceneItemItem struct {
+	// Scene Item name (prefer `id`, including both is acceptable).
+	Name string `json:"name"`
+	// Scene Item ID.
+	Id int `json:"id"`
+}
+
+type DuplicateSceneItemItem struct {
+	// Scene Item name (prefer `id`, including both is acceptable).
+	Name string `json:"name"`
+	// Scene Item ID.
+	Id int `json:"id"`
+}
+
+type ExecuteBatchRequests struct {
+	// Request type. Eg. `GetVersion`.
+	RequestType string `json:"request-type"`
+	// ID of the individual request. Can be any string and not required to be
+	// unique. Defaults to empty string if not specified.
+	MessageId string `json:"message-id,omitempty"`
+}
+
+type GetSceneItemPropertiesItem struct {
+	// Scene Item name (if the `item` field is an object)
+	Name string `json:"name,omitempty"`
+	// Scene Item ID (if the `item` field is an object)
+	Id *int `json:"id,omitempty"`
+}
+
+type ReorderSceneItemsItems struct {
+	// Id of a specific scene item. Unique on a scene by scene basis.
+	Id *int `json:"id,omitempty"`
+	// Name of a scene item. Sufficiently unique if no scene items share sources
+	// within the scene.
+	Name string `json:"name,omitempty"`
+}
+
+type ResetSceneItemItem struct {
+	// Scene Item name (if the `item` field is an object)
+	Name string `json:"name,omitempty"`
+	// Scene Item ID (if the `item` field is an object)
+	Id *int `json:"id,omitempty"`
+}
+
+type SetSceneItemPropertiesItem struct {
+	// Scene Item name (if the `item` field is an object)
+	Name string `json:"name,omitempty"`
+	// Scene Item ID (if the `item` field is an object)
+	Id *int `json:"id,omitempty"`
+}
+
+type SetSceneItemPropertiesPosition struct {
+	// The new x position of the source.
+	X *float64 `json:"x,omitempty"`
+	// The new y position of the source.
+	Y *float64 `json:"y,omitempty"`
+	// The new alignment of the source.
+	Alignment *int `json:"alignment,omitempty"`
+}
+
+type SetSceneItemPropertiesScale struct {
+	// The new x scale of the item.
+	X *float64 `json:"x,omitempty"`
+	// The new y scale of the item.
+	Y *float64 `json:"y,omitempty"`
+	// The new scale filter of the source. Can be "OBS_SCALE_DISABLE",
+	// "OBS_SCALE_POINT", "OBS_SCALE_BICUBIC", "OBS_SCALE_BILINEAR",
+	// "OBS_SCALE_LANCZOS" or "OBS_SCALE_AREA".
+	Filter string `json:"filter,omitempty"`
+}
+
+type SetSceneItemPropertiesCrop struct {
+	// The new amount of pixels cropped off the top of the source before scaling.
+	Top *int `json:"top,omitempty"`
+	// The new amount of pixels cropped off the bottom of the source before scaling.
+	Bottom *int `json:"bottom,omitempty"`
+	// The new amount of pixels cropped off the left of the source before scaling.
+	Left *int `json:"left,omitempty"`
+	// The new amount of pixels cropped off the right of the source before scaling.
+	Right *int `json:"right,omitempty"`
+}
+
+type SetSceneItemPropertiesBounds struct {
+	// The new bounds type of the source. Can be "OBS_BOUNDS_STRETCH",
+	// "OBS_BOUNDS_SCALE_INNER", "OBS_BOUNDS_SCALE_OUTER",
+	// "OBS_BOUNDS_SCALE_TO_WIDTH", "OBS_BOUNDS_SCALE_TO_HEIGHT",
+	// "OBS_BOUNDS_MAX_ONLY" or "OBS_BOUNDS_NONE".
+	Type string `json:"type,omitempty"`
+	// The new alignment of the bounding box. (0-2, 4-6, 8-10)
+	Alignment *int `json:"alignment,omitempty"`
+	// The new width of the bounding box.
+	X *float64 `json:"x,omitempty"`
+	// The new height of the bounding box.
+	Y *float64 `json:"y,omitempty"`
+}
+
+type SetStreamSettingsSettings struct {
+	// The publish URL.
+	Server string `json:"server,omitempty"`
+	// The publish key.
+	Key string `json:"key,omitempty"`
+	// Indicates whether authentication should be used when connecting to the
+	// streaming server.
+	UseAuth *bool `json:"use_auth,omitempty"`
+	// The username for the streaming service.
+	Username string `json:"username,omitempty"`
+	// The password for the streaming service.
+	Password string `json:"password,omitempty"`
+}
+
+type SetTextFreetype2PropertiesFont struct {
+	// Font face.
+	Face string `json:"face,omitempty"`
+	// Font text styling flag. `Bold=1, Italic=2, Bold Italic=3, Underline=5,
+	// Strikeout=8`
+	Flags *int `json:"flags,omitempty"`
+	// Font text size.
+	Size *int `json:"size,omitempty"`
+	// Font Style (unknown function).
+	Style string `json:"style,omitempty"`
+}
+
+type SetTextGDIPlusPropertiesFont struct {
+	// Font face.
+	Face string `json:"face,omitempty"`
+	// Font text styling flag. `Bold=1, Italic=2, Bold Italic=3, Underline=5,
+	// Strikeout=8`
+	Flags *int `json:"flags,omitempty"`
+	// Font text size.
+	Size *int `json:"size,omitempty"`
+	// Font Style (unknown function).
+	Style string `json:"style,omitempty"`
+}
+
+type StartStreamingStream struct {
+	// If specified ensures the type of stream matches the given type (usually
+	// 'rtmp_custom' or 'rtmp_common'). If the currently configured stream type does
+	// not match the given stream type, all settings must be specified in the
+	// `settings` object or an error will occur when starting the stream.
+	Type string `json:"type,omitempty"`
+	// Adds the given object parameters as encoded query string parameters to the
+	// 'key' of the RTMP stream. Used to pass data to the RTMP service about the
+	// streaming. May be any String, Numeric, or Boolean field.
+	Metadata interface{} `json:"metadata,omitempty"`
+	// Settings for the stream.
+	Settings interface{} `json:"settings,omitempty"`
+	// The publish URL.
+	Server string `json:"server,omitempty"`
+	// The publish key of the stream.
+	Key string `json:"key,omitempty"`
+	// Indicates whether authentication should be used when connecting to the
+	// streaming server.
+	UseAuth *bool `json:"use_auth,omitempty"`
+	// If authentication is enabled, the username for the streaming server. Ignored
+	// if `use_auth` is not set to `true`.
+	Username string `json:"username,omitempty"`
+	// If authentication is enabled, the password for the streaming server. Ignored
+	// if `use_auth` is not set to `true`.
+	Password string `json:"password,omitempty"`
+}
+
+type TransitionToProgramWithTransition struct {
+	// Name of the transition.
+	Name string `json:"name"`
+	// Transition duration (in milliseconds).
+	Duration *int `json:"duration,omitempty"`
+}
+
+type TriggerHotkeyBySequenceKeyModifiers struct {
+	// Trigger Shift Key
+	Shift bool `json:"shift"`
+	// Trigger Alt Key
+	Alt bool `json:"alt"`
+	// Trigger Control (Ctrl) Key
+	Control bool `json:"control"`
+	// Trigger Command Key (Mac)
+	Command bool `json:"command"`
 }
