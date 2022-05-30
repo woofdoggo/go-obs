@@ -518,7 +518,7 @@ func (c *Client) ExecuteBatch(Requests []ExecuteBatchRequests, AbortOnFail *bool
 type ExecuteBatchResponse struct {
 	resData
 	// Batch requests results, ordered sequentially.
-	Results struct {
+	Results []struct {
 		// ID of the individual request which was originally provided by the client.
 		MessageId string `json:"message-id"`
 		// Status response as string. Either `ok` or `error`.
@@ -1067,7 +1067,7 @@ func (c *Client) GetMediaSourcesList() (*GetMediaSourcesListResponse, error) {
 type GetMediaSourcesListResponse struct {
 	resData
 	// Array of sources
-	MediaSources struct {
+	MediaSources []struct {
 		// Unique source name
 		SourceName string `json:"sourceName"`
 		// Unique source internal type (a.k.a `ffmpeg_source` or `vlc_source`)
@@ -1475,7 +1475,7 @@ type GetSceneItemListResponse struct {
 	// Name of the requested (or current) scene
 	SceneName string `json:"sceneName"`
 	// Array of scene items
-	SceneItems struct {
+	SceneItems []struct {
 		// Unique item id of the source item
 		ItemId int `json:"itemId"`
 		// ID if the scene item's source. For example `vlc_source` or `image_source`
@@ -1883,7 +1883,7 @@ func (c *Client) GetSourceFilters(SourceName string) (*GetSourceFiltersResponse,
 type GetSourceFiltersResponse struct {
 	resData
 	// List of filters for the specified source
-	Filters struct {
+	Filters []struct {
 		// Filter status (enabled or not)
 		Enabled bool `json:"enabled"`
 		// Filter type
@@ -1986,7 +1986,7 @@ func (c *Client) GetSourceTypesList() (*GetSourceTypesListResponse, error) {
 type GetSourceTypesListResponse struct {
 	resData
 	// Array of source types
-	Types struct {
+	Types []struct {
 		// Non-unique internal source type ID
 		TypeId string `json:"typeId"`
 		// Display name of the source type
@@ -2055,7 +2055,7 @@ func (c *Client) GetSourcesList() (*GetSourcesListResponse, error) {
 type GetSourcesListResponse struct {
 	resData
 	// Array of sources
-	Sources struct {
+	Sources []struct {
 		// Unique source name
 		Name string `json:"name"`
 		// Non-unique source internal type (a.k.a kind)
@@ -2616,7 +2616,7 @@ type GetTransitionListResponse struct {
 	// Name of the currently active transition.
 	CurrentTransition string `json:"current-transition"`
 	// List of transitions.
-	Transitions struct {
+	Transitions []struct {
 		// Name of the transition.
 		Name string `json:"name"`
 	} `json:"transitions"`
@@ -2992,7 +2992,7 @@ func (c *Client) ListProfiles() (*ListProfilesResponse, error) {
 type ListProfilesResponse struct {
 	resData
 	// List of available profiles.
-	Profiles struct {
+	Profiles []struct {
 		// Filter name
 		ProfileName string `json:"profile-name"`
 	} `json:"profiles"`
