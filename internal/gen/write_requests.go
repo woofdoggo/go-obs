@@ -104,11 +104,17 @@ func writeRequests(reqs []Request) {
 		buf.WriteString(fmt.Sprintf("type %sResponse struct {\n", r.Name))
 		buf.WriteString("resData\n")
 		for _, p := range r.Returns {
+			typeStr := p.Type.String()
+			if p, ok := p.Type.(StructType); ok {
+				if p.Array() {
+					typeStr = "[]" + typeStr
+				}
+			}
 			str := fmt.Sprintf(
 				"%s%s %s `json:\"%s\"`\n",
 				wrapComment(p.Docs),
 				p.Name,
-				p.Type.String(),
+				typeStr,
 				p.JsonTag,
 			)
 			buf.WriteString(str)
